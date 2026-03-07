@@ -1,0 +1,66 @@
+{
+  "has_precipitation": false,
+  "temperature": 1,
+  "downfall": 0,
+  "effects": {
+    "ambient_sound": "ambient.crimson_forest.additions",
+    "additions_sound": {
+      "sound": "ambient.crimson_forest.mood",
+      "tick_chance": 0.0111
+    },
+    "music": {
+      "sound": "ambient.crimson_forest.loop",
+      "min_delay": 12000,
+      "max_delay": 24000,
+      "replace_current_music": true
+    },
+    "particle": {
+      "options": {
+        "type": "ash"
+      },
+      "probability": 0.001
+    },
+    "foliage_color": 10387789,
+    "grass_color": 9470285,
+    "sky_color": -14214902,
+    "fog_color": -12966652,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
+  "spawners": {
+    "monster": [],
+    "creature": [
+      {
+        "type": "the_backwoods:splinter",
+        "weight": 17,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "ambient": [],
+    "axolotls": [],
+    "underground_water_creature": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "the_backwoods:wood_plains_tree"
+    ],
+    [
+      "minecraft:freeze_top_layer"
+    ]
+  ]
+}

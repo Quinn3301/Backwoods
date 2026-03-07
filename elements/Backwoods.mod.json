@@ -1,0 +1,76 @@
+{
+  "_fv": 79,
+  "_type": "dimension",
+  "definition": {
+    "biomesInDimension": [
+      {
+        "value": "CUSTOM:WoodPlains"
+      }
+    ],
+    "worldGenType": "Normal world gen",
+    "mainFillerBlock": {
+      "value": "Blocks.PLANKS#0"
+    },
+    "fluidBlock": {
+      "value": "Blocks.AIR"
+    },
+    "seaLevel": 63,
+    "generateOreVeins": false,
+    "generateAquifers": false,
+    "horizontalNoiseSize": 1,
+    "verticalNoiseSize": 2,
+    "defaultEffects": "overworld",
+    "useCustomEffects": true,
+    "hasClouds": false,
+    "cloudHeight": 192,
+    "skyType": "NORMAL",
+    "airColor": {
+      "value": -10927583,
+      "falpha": 0.0
+    },
+    "sunHeightAffectsFog": true,
+    "canRespawnHere": true,
+    "hasFog": true,
+    "ambientLight": 0.0,
+    "doesWaterVaporize": false,
+    "hasFixedTime": false,
+    "fixedTimeValue": 18000,
+    "coordinateScale": 1.0,
+    "infiniburnTag": "minecraft:infiniburn_overworld",
+    "bedWorks": false,
+    "hasSkyLight": false,
+    "imitateOverworldBehaviour": false,
+    "piglinSafe": false,
+    "hasRaids": false,
+    "minMonsterSpawnLightLimit": 0,
+    "maxMonsterSpawnLightLimit": 7,
+    "monsterSpawnBlockLightLimit": 0,
+    "portalFrame": {
+      "value": "Blocks.PLANKS#0"
+    },
+    "portalParticles": {
+      "value": "ASH"
+    },
+    "portalLuminance": 5,
+    "portalSound": {
+      "value": "block.portal.ambient"
+    },
+    "enableIgniter": true,
+    "igniterName": "Flint and Charcoal",
+    "igniterRarity": "COMMON",
+    "specialInformation": {
+      "fixedValue": []
+    },
+    "creativeTabs": [
+      {
+        "value": "TOOLS"
+      }
+    ],
+    "texture": "flint_and_charcoal",
+    "portalTexture": "backwoods_portal",
+    "enablePortal": true,
+    "portalMakeCondition": {
+      "name": "BackwoodsCanMakePortal"
+    }
+  }
+}

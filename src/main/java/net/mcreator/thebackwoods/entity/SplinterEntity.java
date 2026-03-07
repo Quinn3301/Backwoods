@@ -1,0 +1,177 @@
+package net.mcreator.thebackwoods.entity;
+
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
+import net.neoforged.neoforge.common.NeoForgeMod;
+
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.projectile.ThrownPotion;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.Difficulty;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.BuiltInRegistries;
+
+import net.mcreator.thebackwoods.procedures.SplinterOnEntityTickUpdateProcedure;
+import net.mcreator.thebackwoods.init.TheBackwoodsModEntities;
+
+public class SplinterEntity extends Monster {
+	public static final EntityDataAccessor<Integer> DATA_mineProgress = SynchedEntityData.defineId(SplinterEntity.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> DATA_mineX = SynchedEntityData.defineId(SplinterEntity.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> DATA_mineY = SynchedEntityData.defineId(SplinterEntity.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> DATA_mineZ = SynchedEntityData.defineId(SplinterEntity.class, EntityDataSerializers.INT);
+
+	public SplinterEntity(EntityType<SplinterEntity> type, Level world) {
+		super(type, world);
+		xpReward = 10;
+		setNoAi(false);
+	}
+
+	@Override
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_mineProgress, 0);
+		builder.define(DATA_mineX, 0);
+		builder.define(DATA_mineY, 0);
+		builder.define(DATA_mineZ, 0);
+	}
+
+	@Override
+	protected void registerGoals() {
+		super.registerGoals();
+		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, true) {
+			@Override
+			protected boolean canPerformAttack(LivingEntity entity) {
+				return this.isTimeToAttack() && this.mob.distanceToSqr(entity) < (this.mob.getBbWidth() * this.mob.getBbWidth() + entity.getBbWidth()) && this.mob.getSensing().hasLineOfSight(entity);
+			}
+		});
+		this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, (float) 32));
+		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, Player.class, false, false));
+	}
+
+	@Override
+	public Vec3 getPassengerRidingPosition(Entity entity) {
+		return super.getPassengerRidingPosition(entity).add(0, -0.35F, 0);
+	}
+
+	protected void dropCustomDeathLoot(ServerLevel serverLevel, DamageSource source, boolean recentlyHitIn) {
+		super.dropCustomDeathLoot(serverLevel, source, recentlyHitIn);
+		this.spawnAtLocation(new ItemStack(Blocks.OAK_PLANKS));
+	}
+
+	@Override
+	public SoundEvent getAmbientSound() {
+		return BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("the_backwoods:splinter_idle6"));
+	}
+
+	@Override
+	public SoundEvent getHurtSound(DamageSource ds) {
+		return BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("entity.generic.hurt"));
+	}
+
+	@Override
+	public SoundEvent getDeathSound() {
+		return BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("entity.generic.death"));
+	}
+
+	@Override
+	public boolean hurt(DamageSource damagesource, float amount) {
+		if (damagesource.is(DamageTypes.IN_FIRE))
+			return false;
+		if (damagesource.getDirectEntity() instanceof AbstractArrow)
+			return false;
+		if (damagesource.getDirectEntity() instanceof ThrownPotion || damagesource.getDirectEntity() instanceof AreaEffectCloud || damagesource.typeHolder().is(NeoForgeMod.POISON_DAMAGE))
+			return false;
+		if (damagesource.is(DamageTypes.CACTUS))
+			return false;
+		if (damagesource.is(DamageTypes.DROWN))
+			return false;
+		if (damagesource.is(DamageTypes.DRAGON_BREATH))
+			return false;
+		return super.hurt(damagesource, amount);
+	}
+
+	@Override
+	public void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
+		compound.putInt("DatamineProgress", this.entityData.get(DATA_mineProgress));
+		compound.putInt("DatamineX", this.entityData.get(DATA_mineX));
+		compound.putInt("DatamineY", this.entityData.get(DATA_mineY));
+		compound.putInt("DatamineZ", this.entityData.get(DATA_mineZ));
+	}
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
+		if (compound.contains("DatamineProgress"))
+			this.entityData.set(DATA_mineProgress, compound.getInt("DatamineProgress"));
+		if (compound.contains("DatamineX"))
+			this.entityData.set(DATA_mineX, compound.getInt("DatamineX"));
+		if (compound.contains("DatamineY"))
+			this.entityData.set(DATA_mineY, compound.getInt("DatamineY"));
+		if (compound.contains("DatamineZ"))
+			this.entityData.set(DATA_mineZ, compound.getInt("DatamineZ"));
+	}
+
+	@Override
+	public void baseTick() {
+		super.baseTick();
+		SplinterOnEntityTickUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
+	}
+
+	@Override
+	public boolean canDrownInFluidType(FluidType type) {
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
+		Level world = this.level();
+		Entity entity = this;
+		return false;
+	}
+
+	@Override
+	public boolean isPushedByFluid() {
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
+		Level world = this.level();
+		Entity entity = this;
+		return false;
+	}
+
+	public static void init(RegisterSpawnPlacementsEvent event) {
+		event.register(TheBackwoodsModEntities.SPLINTER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+				(entityType, world, reason, pos, random) -> (world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random) && Mob.checkMobSpawnRules(entityType, world, reason, pos, random)),
+				RegisterSpawnPlacementsEvent.Operation.REPLACE);
+	}
+
+	public static AttributeSupplier.Builder createAttributes() {
+		AttributeSupplier.Builder builder = Mob.createMobAttributes();
+		builder = builder.add(Attributes.MOVEMENT_SPEED, 0.3);
+		builder = builder.add(Attributes.MAX_HEALTH, 30);
+		builder = builder.add(Attributes.ARMOR, 0);
+		builder = builder.add(Attributes.ATTACK_DAMAGE, 6);
+		builder = builder.add(Attributes.FOLLOW_RANGE, 32);
+		builder = builder.add(Attributes.STEP_HEIGHT, 1);
+		return builder;
+	}
+}
