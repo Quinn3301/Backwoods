@@ -106,16 +106,16 @@
       "value": ""
     },
     "livingSound": {
-      "value": ""
+      "value": "CUSTOM:splinter_idle"
     },
     "hurtSound": {
-      "value": "entity.generic.hurt"
+      "value": "CUSTOM:splinter_hurt"
     },
     "deathSound": {
       "value": "entity.generic.death"
     },
     "stepSound": {
-      "value": ""
+      "value": "CUSTOM:splinter_step"
     },
     "raidCelebrationSound": {
       "value": ""
@@ -145,7 +145,7 @@
     "spawningProbability": 1,
     "mobSpawningType": "monster",
     "minNumberOfMobsPerGroup": 1,
-    "maxNumberOfMobsPerGroup": 4,
+    "maxNumberOfMobsPerGroup": 2,
     "restrictionBiomes": [
       {
         "value": "CUSTOM:WoodPlains"

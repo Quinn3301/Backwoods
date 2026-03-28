@@ -22,8 +22,8 @@
     },
     "foliage_color": 10387789,
     "grass_color": 9470285,
-    "sky_color": -15069436,
-    "fog_color": -14346237,
+    "sky_color": -10143217,
+    "fog_color": -11849722,
     "water_color": 4159204,
     "water_fog_color": 329011
   },
@@ -31,25 +31,24 @@
     "monster": [
       {
         "type": "the_backwoods:hollow",
-        "weight": 11,
+        "weight": 10,
         "minCount": 1,
-        "maxCount": 3
+        "maxCount": 1
       },
       {
         "type": "the_backwoods:log_splinter",
-        "weight": 20,
-        "minCount": 2,
-        "maxCount": 4
-      }
-    ],
-    "creature": [
+        "weight": 15,
+        "minCount": 1,
+        "maxCount": 1
+      },
       {
-        "type": "the_backwoods:splinter",
-        "weight": 25,
-        "minCount": 3,
-        "maxCount": 5
+        "type": "the_backwoods:ash_weaver",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
       }
     ],
+    "creature": [],
     "ambient": [],
     "axolotls": [],
     "underground_water_creature": [],
@@ -58,10 +57,18 @@
     "misc": []
   },
   "spawn_costs": {},
-  "carvers": {},
+  "carvers": {
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
+  },
   "features": [
     [],
-    [],
+    [
+      "minecraft:lake_lava_underground"
+    ],
     [],
     [],
     [],

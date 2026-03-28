@@ -9,8 +9,10 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.api.distmarker.Dist;
 
 import net.mcreator.thebackwoods.client.renderer.SplinterRenderer;
+import net.mcreator.thebackwoods.client.renderer.RotRenderer;
 import net.mcreator.thebackwoods.client.renderer.LogSplinterRenderer;
 import net.mcreator.thebackwoods.client.renderer.HollowRenderer;
+import net.mcreator.thebackwoods.client.renderer.AshWeaverRenderer;
 
 @EventBusSubscriber(Dist.CLIENT)
 public class TheBackwoodsModEntityRenderers {
@@ -19,5 +21,7 @@ public class TheBackwoodsModEntityRenderers {
 		event.registerEntityRenderer(TheBackwoodsModEntities.SPLINTER.get(), SplinterRenderer::new);
 		event.registerEntityRenderer(TheBackwoodsModEntities.HOLLOW.get(), HollowRenderer::new);
 		event.registerEntityRenderer(TheBackwoodsModEntities.LOG_SPLINTER.get(), LogSplinterRenderer::new);
+		event.registerEntityRenderer(TheBackwoodsModEntities.ASH_WEAVER.get(), AshWeaverRenderer::new);
+		event.registerEntityRenderer(TheBackwoodsModEntities.ROT.get(), RotRenderer::new);
 	}
 }

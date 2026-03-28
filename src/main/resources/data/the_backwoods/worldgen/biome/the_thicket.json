@@ -28,19 +28,26 @@
     },
     "foliage_color": 10387789,
     "grass_color": 9470285,
-    "sky_color": -13097970,
-    "fog_color": -10075897,
+    "sky_color": -7046095,
+    "fog_color": -8037346,
     "water_color": 4159204,
     "water_fog_color": 329011
   },
   "spawners": {
-    "monster": [],
-    "creature": [
+    "monster": [
       {
         "type": "the_backwoods:log_splinter",
-        "weight": 17,
-        "minCount": 3,
-        "maxCount": 4
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "creature": [
+      {
+        "type": "the_backwoods:ash_weaver",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
       }
     ],
     "ambient": [],

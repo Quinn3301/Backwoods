@@ -6,7 +6,9 @@ import net.neoforged.neoforge.common.NeoForgeMod;
 
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.projectile.ThrownPotion;
@@ -21,6 +23,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.Difficulty;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -30,10 +33,13 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.BlockPos;
 
-import net.mcreator.thebackwoods.procedures.SplinterThisEntityKillsAnotherOneProcedure;
+import net.mcreator.thebackwoods.procedures.SplinterOnInitialEntitySpawnProcedure;
 import net.mcreator.thebackwoods.procedures.SplinterOnEntityTickUpdateProcedure;
 import net.mcreator.thebackwoods.init.TheBackwoodsModEntities;
+
+import javax.annotation.Nullable;
 
 public class SplinterEntity extends Monster {
 	public static final EntityDataAccessor<Integer> DATA_mineProgress = SynchedEntityData.defineId(SplinterEntity.class, EntityDataSerializers.INT);
@@ -41,6 +47,8 @@ public class SplinterEntity extends Monster {
 	public static final EntityDataAccessor<Integer> DATA_mineY = SynchedEntityData.defineId(SplinterEntity.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> DATA_mineZ = SynchedEntityData.defineId(SplinterEntity.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> DATA_buildProgress = SynchedEntityData.defineId(SplinterEntity.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> DATA_frozenByRose = SynchedEntityData.defineId(SplinterEntity.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> DATA_scan_timer = SynchedEntityData.defineId(SplinterEntity.class, EntityDataSerializers.INT);
 
 	public SplinterEntity(EntityType<SplinterEntity> type, Level world) {
 		super(type, world);
@@ -56,6 +64,8 @@ public class SplinterEntity extends Monster {
 		builder.define(DATA_mineY, 0);
 		builder.define(DATA_mineZ, 0);
 		builder.define(DATA_buildProgress, 0);
+		builder.define(DATA_frozenByRose, 0);
+		builder.define(DATA_scan_timer, 0);
 	}
 
 	@Override
@@ -67,8 +77,9 @@ public class SplinterEntity extends Monster {
 				return this.isTimeToAttack() && this.mob.distanceToSqr(entity) < (this.mob.getBbWidth() * this.mob.getBbWidth() + entity.getBbWidth()) && this.mob.getSensing().hasLineOfSight(entity);
 			}
 		});
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Player.class, false, false));
-		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, (float) 32));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Player.class, true, false));
+		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, AshWeaverEntity.class, true, false));
+		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, (float) 32));
 	}
 
 	@Override
@@ -83,12 +94,17 @@ public class SplinterEntity extends Monster {
 
 	@Override
 	public SoundEvent getAmbientSound() {
-		return BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("the_backwoods:splinter_idle6"));
+		return BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("the_backwoods:splinter_idle"));
+	}
+
+	@Override
+	public void playStepSound(BlockPos pos, BlockState blockIn) {
+		this.playSound(BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("the_backwoods:splinter_step")), 0.15f, 1);
 	}
 
 	@Override
 	public SoundEvent getHurtSound(DamageSource ds) {
-		return BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("the_backwoods:splinter_step1"));
+		return BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("the_backwoods:splinter_hurt"));
 	}
 
 	@Override
@@ -98,8 +114,6 @@ public class SplinterEntity extends Monster {
 
 	@Override
 	public boolean hurt(DamageSource damagesource, float amount) {
-		if (damagesource.is(DamageTypes.IN_FIRE))
-			return false;
 		if (damagesource.getDirectEntity() instanceof AbstractArrow)
 			return false;
 		if (damagesource.getDirectEntity() instanceof ThrownPotion || damagesource.getDirectEntity() instanceof AreaEffectCloud || damagesource.typeHolder().is(NeoForgeMod.POISON_DAMAGE))
@@ -114,6 +128,13 @@ public class SplinterEntity extends Monster {
 	}
 
 	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata) {
+		SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata);
+		SplinterOnInitialEntitySpawnProcedure.execute(this);
+		return retval;
+	}
+
+	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putInt("DatamineProgress", this.entityData.get(DATA_mineProgress));
@@ -121,6 +142,8 @@ public class SplinterEntity extends Monster {
 		compound.putInt("DatamineY", this.entityData.get(DATA_mineY));
 		compound.putInt("DatamineZ", this.entityData.get(DATA_mineZ));
 		compound.putInt("DatabuildProgress", this.entityData.get(DATA_buildProgress));
+		compound.putInt("DatafrozenByRose", this.entityData.get(DATA_frozenByRose));
+		compound.putInt("Datascan_timer", this.entityData.get(DATA_scan_timer));
 	}
 
 	@Override
@@ -136,18 +159,16 @@ public class SplinterEntity extends Monster {
 			this.entityData.set(DATA_mineZ, compound.getInt("DatamineZ"));
 		if (compound.contains("DatabuildProgress"))
 			this.entityData.set(DATA_buildProgress, compound.getInt("DatabuildProgress"));
-	}
-
-	@Override
-	public void awardKillScore(Entity entity, int score, DamageSource damageSource) {
-		super.awardKillScore(entity, score, damageSource);
-		SplinterThisEntityKillsAnotherOneProcedure.execute(this.level(), entity);
+		if (compound.contains("DatafrozenByRose"))
+			this.entityData.set(DATA_frozenByRose, compound.getInt("DatafrozenByRose"));
+		if (compound.contains("Datascan_timer"))
+			this.entityData.set(DATA_scan_timer, compound.getInt("Datascan_timer"));
 	}
 
 	@Override
 	public void baseTick() {
 		super.baseTick();
-		SplinterOnEntityTickUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
+		SplinterOnEntityTickUpdateProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
 	}
 
 	@Override

@@ -13,18 +13,18 @@
       "value": "Blocks.PLANKS#0"
     },
     "airColor": {
-      "value": -14214902,
+      "value": -7571408,
       "falpha": 0.0
     },
     "fogColor": {
-      "value": -12966652,
+      "value": -6321344,
       "falpha": 0.0
     },
     "ambientSound": {
       "value": "ambient.crimson_forest.additions"
     },
     "additionsSound": {
-      "value": "ambient.crimson_forest.mood"
+      "value": ""
     },
     "music": {
       "value": "ambient.crimson_forest.loop"
@@ -44,15 +44,15 @@
     "spawnInCaves": false,
     "spawnBiomeNether": false,
     "genTemperature": {
-      "min": -0.5,
+      "min": -0.1,
       "max": 0.5
     },
     "genHumidity": {
-      "min": -0.5,
+      "min": -0.3,
       "max": 0.5
     },
     "genContinentalness": {
-      "min": 0.3,
+      "min": 0.2,
       "max": 1.0
     },
     "genErosion": {
@@ -80,10 +80,11 @@
       "value": ""
     },
     "defaultFeatures": [
-      "FrozenTopLayer"
+      "FrozenTopLayer",
+      "Caves"
     ],
     "spawnStronghold": false,
-    "spawnMineshaft": false,
+    "spawnMineshaft": true,
     "spawnMineshaftMesa": false,
     "spawnPillagerOutpost": false,
     "villageType": "none",
@@ -109,8 +110,8 @@
         },
         "minGroup": 1,
         "maxGroup": 1,
-        "weight": 17,
-        "spawnType": "creature"
+        "weight": 1,
+        "spawnType": "monster"
       }
     ]
   }

@@ -545,7 +545,10 @@
                         {
                           "type": "minecraft:block",
                           "result_state": {
-                            "Name": "minecraft:spruce_planks"
+                            "Name": "minecraft:spruce_wood",
+                            "Properties": {
+                              "axis": "y"
+                            }
                           }
                         }
                       ]

@@ -4,10 +4,6 @@
   "downfall": 0,
   "effects": {
     "ambient_sound": "ambient.crimson_forest.additions",
-    "additions_sound": {
-      "sound": "ambient.crimson_forest.mood",
-      "tick_chance": 0.0111
-    },
     "music": {
       "sound": "ambient.crimson_forest.loop",
       "min_delay": 12000,
@@ -22,21 +18,21 @@
     },
     "foliage_color": 10387789,
     "grass_color": 9470285,
-    "sky_color": -14214902,
-    "fog_color": -12966652,
+    "sky_color": -7571408,
+    "fog_color": -6321344,
     "water_color": 4159204,
     "water_fog_color": 329011
   },
   "spawners": {
-    "monster": [],
-    "creature": [
+    "monster": [
       {
         "type": "the_backwoods:splinter",
-        "weight": 17,
+        "weight": 1,
         "minCount": 1,
         "maxCount": 1
       }
     ],
+    "creature": [],
     "ambient": [],
     "axolotls": [],
     "underground_water_creature": [],
@@ -45,10 +41,18 @@
     "misc": []
   },
   "spawn_costs": {},
-  "carvers": {},
+  "carvers": {
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
+  },
   "features": [
     [],
-    [],
+    [
+      "minecraft:lake_lava_underground"
+    ],
     [],
     [],
     [],

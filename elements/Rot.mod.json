@@ -1,0 +1,286 @@
+{
+  "_fv": 79,
+  "_type": "livingentity",
+  "definition": {
+    "mobName": "Rot",
+    "mobLabel": "",
+    "mobModelName": "Biped",
+    "mobModelTexture": "rot_biped_base.png",
+    "transparentModelCondition": {
+      "fixedValue": false
+    },
+    "isShakingCondition": {
+      "fixedValue": false
+    },
+    "solidBoundingBox": {
+      "fixedValue": false
+    },
+    "visualScale": {
+      "fixedValue": 1.25
+    },
+    "boundingBoxScale": {
+      "fixedValue": 1.2
+    },
+    "modelLayers": [
+      {
+        "model": "Default",
+        "texture": "oak_biped.png",
+        "disableHurtOverlay": false,
+        "glow": false,
+        "condition": {
+          "name": "RotDisplayCondition1"
+        }
+      },
+      {
+        "model": "Default",
+        "texture": "rot_layer2.png",
+        "disableHurtOverlay": false,
+        "glow": false,
+        "condition": {
+          "name": "RotDisplayCondition2"
+        }
+      },
+      {
+        "model": "Default",
+        "texture": "rot_layer3.png",
+        "disableHurtOverlay": false,
+        "glow": false,
+        "condition": {
+          "name": "RotDisplayCondition3"
+        }
+      },
+      {
+        "model": "Default",
+        "texture": "rot_layer4.png",
+        "disableHurtOverlay": false,
+        "glow": false,
+        "condition": {
+          "name": "RotDisplayCondition4"
+        }
+      },
+      {
+        "model": "Default",
+        "texture": "rot_layer5.png",
+        "disableHurtOverlay": false,
+        "glow": false,
+        "condition": {
+          "name": "RotDisplayCondition5"
+        }
+      },
+      {
+        "model": "Default",
+        "texture": "rot_layer6.png",
+        "disableHurtOverlay": false,
+        "glow": false,
+        "condition": {
+          "name": "RotDisplayCondition6"
+        }
+      },
+      {
+        "model": "Default",
+        "texture": "rot_layer7.png",
+        "disableHurtOverlay": false,
+        "glow": false,
+        "condition": {
+          "name": "RotDisplayCondition7"
+        }
+      }
+    ],
+    "animations": [],
+    "modelWidth": 0.7000000000000001,
+    "modelHeight": 2.0,
+    "modelShadowSize": 0.7,
+    "mountedYOffset": 0.0,
+    "hasSpawnEgg": true,
+    "spawnEggBaseColor": {
+      "value": -6914706,
+      "falpha": 0.0
+    },
+    "spawnEggDotColor": {
+      "value": -10263709,
+      "falpha": 0.0
+    },
+    "spawnEggTexture": "",
+    "creativeTabs": [
+      {
+        "value": "MISC"
+      }
+    ],
+    "isBoss": false,
+    "bossBarColor": "PINK",
+    "bossBarType": "PROGRESS",
+    "equipmentMainHand": {
+      "value": ""
+    },
+    "equipmentOffHand": {
+      "value": ""
+    },
+    "equipmentHelmet": {
+      "value": ""
+    },
+    "equipmentBody": {
+      "value": ""
+    },
+    "equipmentLeggings": {
+      "value": ""
+    },
+    "equipmentBoots": {
+      "value": ""
+    },
+    "mobBehaviourType": "Mob",
+    "mobCreatureType": "ILLAGER",
+    "attackStrength": 18,
+    "attackKnockback": 0.6,
+    "knockbackResistance": 0.5,
+    "movementSpeed": 0.3,
+    "stepHeight": 1.5,
+    "armorBaseValue": 15.0,
+    "trackingRange": 64,
+    "followRange": 64,
+    "health": 550,
+    "xpAmount": 0,
+    "waterMob": false,
+    "breatheUnderwater": {
+      "fixedValue": true
+    },
+    "pushedByFluids": {
+      "fixedValue": false
+    },
+    "flyingMob": false,
+    "inventorySize": 9,
+    "inventoryStackSize": 99,
+    "disableCollisions": false,
+    "ridable": false,
+    "canControlForward": false,
+    "canControlStrafe": false,
+    "immuneToFire": true,
+    "immuneToArrows": false,
+    "immuneToFallDamage": true,
+    "immuneToCactus": false,
+    "immuneToDrowning": false,
+    "immuneToLightning": false,
+    "immuneToPotions": false,
+    "immuneToPlayer": false,
+    "immuneToExplosion": true,
+    "immuneToTrident": false,
+    "immuneToAnvil": false,
+    "immuneToWither": false,
+    "immuneToDragonBreath": false,
+    "mobDrop": {
+      "value": "CUSTOM:Seep"
+    },
+    "livingSound": {
+      "value": "CUSTOM:rot_idle"
+    },
+    "hurtSound": {
+      "value": "CUSTOM:splinter_hurt"
+    },
+    "deathSound": {
+      "value": "entity.creaking.death"
+    },
+    "stepSound": {
+      "value": "CUSTOM:rot_step"
+    },
+    "raidCelebrationSound": {
+      "value": ""
+    },
+    "entityDataEntries": [
+      {
+        "min": -2147483648,
+        "max": 2147483647,
+        "name": "mineProgress",
+        "type": "integer",
+        "value": 0
+      },
+      {
+        "min": -2147483648,
+        "max": 2147483647,
+        "name": "mineX",
+        "type": "integer",
+        "value": 0
+      },
+      {
+        "min": -2147483648,
+        "max": 2147483647,
+        "name": "mineY",
+        "type": "integer",
+        "value": 0
+      },
+      {
+        "min": -2147483648,
+        "max": 2147483647,
+        "name": "mineZ",
+        "type": "integer",
+        "value": 0
+      },
+      {
+        "min": -2147483648,
+        "max": 2147483647,
+        "name": "animationTimer",
+        "type": "integer",
+        "value": 0
+      },
+      {
+        "min": -2147483648,
+        "max": 2147483647,
+        "name": "sonicCooldown",
+        "type": "integer",
+        "value": 0
+      }
+    ],
+    "whenMobIsHurt": {
+      "name": "RotEntityIsHurt"
+    },
+    "onMobTickUpdate": {
+      "name": "RotOnEntityTickUpdate"
+    },
+    "onInitialSpawn": {
+      "name": "RotOnInitialEntitySpawn"
+    },
+    "hasAI": true,
+    "aiBase": "(none)",
+    "aixml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"watch_closest_entity\"><field name=\"entity\">EntityPlayer</field><field name=\"radius\">6</field><field name=\"condition\">null,null</field><next><block type=\"attack_on_collide\"><field name=\"speed\">1</field><field name=\"longmemory\">FALSE</field><field name=\"condition\">null,null</field><next><block type=\"attack_entity\"><field name=\"insight\">TRUE</field><field name=\"nearby\">FALSE</field><field name=\"entity\">EntityPlayer</field><field name=\"condition\">null,null</field><next><block type=\"doors_break\"><field name=\"condition\">null,null</field></block></next></block></next></block></next></block></next></block></xml>",
+    "breedable": false,
+    "tameable": false,
+    "breedTriggerItems": [],
+    "ranged": false,
+    "rangedAttackItem": {
+      "value": ""
+    },
+    "rangedItemType": "Default item",
+    "rangedAttackInterval": 20,
+    "rangedAttackRadius": 10.0,
+    "spawnThisMob": false,
+    "doesDespawnWhenIdle": true,
+    "spawningProbability": 1,
+    "mobSpawningType": "monster",
+    "minNumberOfMobsPerGroup": 1,
+    "maxNumberOfMobsPerGroup": 1,
+    "restrictionBiomes": [
+      {
+        "value": "CUSTOM:WoodPlains"
+      },
+      {
+        "value": "CUSTOM:DeepBackwoods"
+      },
+      {
+        "value": "CUSTOM:TheThicket"
+      }
+    ],
+    "spawnInDungeons": false,
+    "raidSpawnsCount": [
+      4,
+      3,
+      3,
+      4,
+      4,
+      4,
+      2
+    ],
+    "sensitiveToVibration": false,
+    "vibrationalEvents": [],
+    "vibrationSensitivityRadius": {
+      "fixedValue": 10.0
+    }
+  }
+}

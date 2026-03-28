@@ -1,0 +1,50 @@
+{
+  "has_precipitation": false,
+  "temperature": 0.17,
+  "downfall": 0,
+  "effects": {
+    "mood_sound": {
+      "sound": "the_backwoods:degradation",
+      "tick_delay": 900,
+      "offset": 8,
+      "block_search_extent": 2
+    },
+    "particle": {
+      "options": {
+        "type": "ash"
+      },
+      "probability": 0.005
+    },
+    "foliage_color": 10387789,
+    "grass_color": 9470285,
+    "sky_color": -9079435,
+    "fog_color": -11909824,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
+  "spawners": {
+    "monster": [],
+    "creature": [],
+    "ambient": [],
+    "axolotls": [],
+    "underground_water_creature": [],
+    "water_creature": [],
+    "water_ambient": [],
+    "misc": []
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  ]
+}

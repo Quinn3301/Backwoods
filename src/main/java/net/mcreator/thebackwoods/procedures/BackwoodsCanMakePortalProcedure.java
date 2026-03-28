@@ -38,7 +38,7 @@ public class BackwoodsCanMakePortalProcedure {
 					}
 				}
 				if (world instanceof ServerLevel _level)
-					_level.sendParticles(ParticleTypes.SMOKE, (entity.getX()), (entity.getY()), (entity.getZ()), 15, 1, 1, 1, 0.2);
+					_level.sendParticles(ParticleTypes.SMOKE, (entity.getX()), (entity.getY()), (entity.getZ()), 15, 1, 1, 1, 0.1);
 				return false;
 			}
 			return true;

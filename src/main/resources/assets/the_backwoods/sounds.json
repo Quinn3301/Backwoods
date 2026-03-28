@@ -1,99 +1,239 @@
 {
-  "splinter_idle1": {
-    "subtitle": "subtitles.splinter_idle1",
+  "wood_creak_paranoia": {
+    "subtitle": "subtitles.wood_creak_paranoia",
     "sounds": [
       {
-        "name": "the_backwoods:creaking_idle1",
+        "name": "the_backwoods:wood_crack1",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:wood_crack2",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:wood_crack3",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:wood_crack4",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:wood_crack5",
         "stream": false
       }
     ]
   },
-  "splinter_idle2": {
-    "subtitle": "subtitles.splinter_idle2",
+  "whisperstage1": {
+    "subtitle": "subtitles.whisperstage1",
     "sounds": [
       {
-        "name": "the_backwoods:creaking_idle2",
+        "name": "the_backwoods:whisper_1",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:whisper_2",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:whisper_3",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:whisper_4",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:whisper_5",
         "stream": false
       }
     ]
   },
-  "splinter_idle3": {
-    "subtitle": "subtitles.splinter_idle3",
+  "degradation": {
+    "subtitle": "subtitles.degradation",
     "sounds": [
       {
-        "name": "the_backwoods:creaking_idle3",
+        "name": "the_backwoods:r1_stage6",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:o1_stage6",
         "stream": false
       }
     ]
   },
-  "splinter_idle4": {
-    "subtitle": "subtitles.splinter_idle4",
+  "rot_step": {
+    "subtitle": "subtitles.rot_step",
     "sounds": [
       {
-        "name": "the_backwoods:creaking_idle4",
+        "name": "the_backwoods:rot_step4",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:rot_step3",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:rot_step2",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:rot_step1",
         "stream": false
       }
     ]
   },
-  "splinter_idle5": {
-    "subtitle": "subtitles.splinter_idle5",
+  "rot_roar": {
+    "subtitle": "subtitles.rot_roar",
     "sounds": [
       {
-        "name": "the_backwoods:creaking_idle5",
+        "name": "the_backwoods:rot_roar",
         "stream": false
       }
     ]
   },
-  "splinter_idle6": {
-    "subtitle": "subtitles.splinter_idle6",
+  "splinter_step": {
+    "subtitle": "subtitles.splinter_step",
     "sounds": [
       {
-        "name": "the_backwoods:creaking_idle6",
+        "name": "the_backwoods:creaking_step5",
         "stream": false
-      }
-    ]
-  },
-  "splinter_step1": {
-    "subtitle": "subtitles.splinter_step1",
-    "sounds": [
+      },
+      {
+        "name": "the_backwoods:creaking_step4",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:creaking_step3",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:creaking_step2",
+        "stream": false
+      },
       {
         "name": "the_backwoods:creaking_step1",
         "stream": false
       }
     ]
   },
-  "splinter_step2": {
-    "subtitle": "subtitles.splinter_step2",
+  "splinter_attack": {
+    "subtitle": "subtitles.splinter_attack",
     "sounds": [
       {
-        "name": "the_backwoods:creaking_step2",
+        "name": "the_backwoods:creaking_attack4",
         "stream": false
-      }
-    ]
-  },
-  "splinter_step3": {
-    "subtitle": "subtitles.splinter_step3",
-    "sounds": [
+      },
       {
-        "name": "the_backwoods:creaking_step3",
+        "name": "the_backwoods:creaking_attack2",
         "stream": false
-      }
-    ]
-  },
-  "splinter_unfreeze1": {
-    "subtitle": "subtitles.splinter_unfreeze1",
-    "sounds": [
+      },
       {
-        "name": "the_backwoods:creaking_unfreeze1",
+        "name": "the_backwoods:creaking_attack3",
         "stream": false
-      }
-    ]
-  },
-  "splinter_attack1": {
-    "subtitle": "subtitles.splinter_attack1",
-    "sounds": [
+      },
       {
         "name": "the_backwoods:creaking_attack1",
+        "stream": false
+      }
+    ]
+  },
+  "splinter_idle": {
+    "subtitle": "subtitles.splinter_idle",
+    "sounds": [
+      {
+        "name": "the_backwoods:creaking_idle4",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:creaking_idle3",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:creaking_idle2",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:creaking_idle1",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:creaking_idle6",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:creaking_idle5",
+        "stream": false
+      }
+    ]
+  },
+  "splinter_hurt": {
+    "subtitle": "subtitles.splinter_hurt",
+    "sounds": [
+      {
+        "name": "the_backwoods:splinter_hurt2",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:splinter_hurt3",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:splinter_hurt1",
+        "stream": false
+      }
+    ]
+  },
+  "rotten_planks_break": {
+    "subtitle": "subtitles.rotten_planks_break",
+    "sounds": [
+      {
+        "name": "the_backwoods:rotten_break1",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:rotten_break2",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:rotten_break3",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:rotten_break4",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:rotten_break5",
+        "stream": false
+      }
+    ]
+  },
+  "rotten_planks_step": {
+    "subtitle": "subtitles.rotten_planks_step",
+    "sounds": [
+      {
+        "name": "the_backwoods:rotten_step1",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:rotten_step2",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:rotten_step3",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:rotten_step4",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:rotten_step5",
+        "stream": false
+      },
+      {
+        "name": "the_backwoods:rotten_step6",
         "stream": false
       }
     ]

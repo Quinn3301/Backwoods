@@ -3,6 +3,9 @@
   "values": [
     "minecraft:oak_planks",
     "minecraft:spruce_planks",
+    "minecraft:stone",
+    "the_backwoods:rotten_oak_wood",
+    "the_backwoods:faded_block",
     "minecraft:oak_log",
     "minecraft:spruce_log"
   ]

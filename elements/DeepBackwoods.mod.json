@@ -10,14 +10,14 @@
       "value": "Blocks.LOG#1"
     },
     "underwaterBlock": {
-      "value": "Blocks.PLANKS#1"
+      "value": "Blocks.SPRUCE_WOOD"
     },
     "airColor": {
-      "value": -15069436,
+      "value": -10143217,
       "falpha": 0.0
     },
     "fogColor": {
-      "value": -14346237,
+      "value": -11849722,
       "falpha": 0.0
     },
     "ambientSound": {
@@ -79,7 +79,9 @@
     "treeFruits": {
       "value": ""
     },
-    "defaultFeatures": [],
+    "defaultFeatures": [
+      "Caves"
+    ],
     "spawnStronghold": false,
     "spawnMineshaft": false,
     "spawnMineshaftMesa": false,
@@ -103,29 +105,29 @@
     "spawnEntries": [
       {
         "entity": {
-          "value": "CUSTOM:Splinter"
-        },
-        "minGroup": 3,
-        "maxGroup": 5,
-        "weight": 25,
-        "spawnType": "creature"
-      },
-      {
-        "entity": {
           "value": "CUSTOM:Hollow"
         },
         "minGroup": 1,
-        "maxGroup": 3,
-        "weight": 11,
+        "maxGroup": 1,
+        "weight": 10,
         "spawnType": "monster"
       },
       {
         "entity": {
           "value": "CUSTOM:LogSplinter"
         },
-        "minGroup": 2,
-        "maxGroup": 4,
-        "weight": 20,
+        "minGroup": 1,
+        "maxGroup": 1,
+        "weight": 15,
+        "spawnType": "monster"
+      },
+      {
+        "entity": {
+          "value": "CUSTOM:AshWeaver"
+        },
+        "minGroup": 1,
+        "maxGroup": 1,
+        "weight": 1,
         "spawnType": "monster"
       }
     ]

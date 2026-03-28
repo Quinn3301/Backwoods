@@ -5,7 +5,14 @@
     "recipeType": "Crafting",
     "recipeRetstackSize": 1,
     "group": "",
-    "unlockingItems": [],
+    "unlockingItems": [
+      {
+        "value": "Items.COAL#1"
+      },
+      {
+        "value": "Items.IRON_INGOT"
+      }
+    ],
     "cookingBookCategory": "MISC",
     "xpReward": 0.0,
     "cookingTime": 200,

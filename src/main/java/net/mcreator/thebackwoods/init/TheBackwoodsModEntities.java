@@ -16,19 +16,29 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.core.registries.Registries;
 
 import net.mcreator.thebackwoods.entity.SplinterEntity;
+import net.mcreator.thebackwoods.entity.RotEntity;
 import net.mcreator.thebackwoods.entity.LogSplinterEntity;
 import net.mcreator.thebackwoods.entity.HollowEntity;
+import net.mcreator.thebackwoods.entity.AshWeaverEntity;
 import net.mcreator.thebackwoods.TheBackwoodsMod;
 
 @EventBusSubscriber
 public class TheBackwoodsModEntities {
 	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(Registries.ENTITY_TYPE, TheBackwoodsMod.MODID);
 	public static final DeferredHolder<EntityType<?>, EntityType<SplinterEntity>> SPLINTER = register("splinter",
-			EntityType.Builder.<SplinterEntity>of(SplinterEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).fireImmune().ridingOffset(-0.6f).sized(0.6f, 1.8f));
+			EntityType.Builder.<SplinterEntity>of(SplinterEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3)
+
+					.ridingOffset(-0.6f).sized(0.6f, 1.8f));
 	public static final DeferredHolder<EntityType<?>, EntityType<HollowEntity>> HOLLOW = register("hollow",
 			EntityType.Builder.<HollowEntity>of(HollowEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).fireImmune().ridingOffset(-0.6f).sized(0.6f, 1.8f));
 	public static final DeferredHolder<EntityType<?>, EntityType<LogSplinterEntity>> LOG_SPLINTER = register("log_splinter",
 			EntityType.Builder.<LogSplinterEntity>of(LogSplinterEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).fireImmune().ridingOffset(-0.6f).sized(0.6f, 1.8f));
+	public static final DeferredHolder<EntityType<?>, EntityType<AshWeaverEntity>> ASH_WEAVER = register("ash_weaver",
+			EntityType.Builder.<AshWeaverEntity>of(AshWeaverEntity::new, MobCategory.CREATURE).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3)
+
+					.ridingOffset(-0.6f).sized(0.6f, 1.8f));
+	public static final DeferredHolder<EntityType<?>, EntityType<RotEntity>> ROT = register("rot",
+			EntityType.Builder.<RotEntity>of(RotEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).fireImmune().ridingOffset(-0.6f).sized(0.7f, 2f));
 
 	// Start of user code block custom entities
 	// End of user code block custom entities
@@ -41,6 +51,8 @@ public class TheBackwoodsModEntities {
 		SplinterEntity.init(event);
 		HollowEntity.init(event);
 		LogSplinterEntity.init(event);
+		AshWeaverEntity.init(event);
+		RotEntity.init(event);
 	}
 
 	@SubscribeEvent
@@ -48,5 +60,7 @@ public class TheBackwoodsModEntities {
 		event.put(SPLINTER.get(), SplinterEntity.createAttributes().build());
 		event.put(HOLLOW.get(), HollowEntity.createAttributes().build());
 		event.put(LOG_SPLINTER.get(), LogSplinterEntity.createAttributes().build());
+		event.put(ASH_WEAVER.get(), AshWeaverEntity.createAttributes().build());
+		event.put(ROT.get(), RotEntity.createAttributes().build());
 	}
 }

@@ -3,8 +3,8 @@
   "biomes": "the_backwoods:the_thicket",
   "spawners": {
     "type": "the_backwoods:log_splinter",
-    "weight": 7,
+    "weight": 2,
     "minCount": 1,
-    "maxCount": 4
+    "maxCount": 1
   }
 }

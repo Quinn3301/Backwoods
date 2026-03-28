@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "the_backwoods:rotten_oak_planks"
+    },
+    {
+      "item": "the_backwoods:rotten_oak_planks"
+    }
+  ],
+  "result": {
+    "id": "the_backwoods:rotten_stick",
+    "count": 4
+  }
+}
