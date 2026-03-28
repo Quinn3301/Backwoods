@@ -24,6 +24,8 @@ The Backwoods is a metaphor for avoidance and the psychological cost of isolatio
 
 ---
 
+## This mod isn't tested on multiplayer. I hope there won't be any bugs.
+
 ## Built With
 
 - [MCreator 2025.3](https://mcreator.net/)
