@@ -86,7 +86,7 @@ public class RotEntity extends Monster {
 
 	protected void dropCustomDeathLoot(ServerLevel serverLevel, DamageSource source, boolean recentlyHitIn) {
 		super.dropCustomDeathLoot(serverLevel, source, recentlyHitIn);
-		this.spawnAtLocation(new ItemStack(TheBackwoodsModItems.SEEP.get()));
+		this.spawnAtLocation(new ItemStack(TheBackwoodsModItems.RESONANT_ROT_EFFIGY.get()));
 	}
 
 	@Override

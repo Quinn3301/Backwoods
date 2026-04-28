@@ -89,7 +89,7 @@
     "ridable": false,
     "canControlForward": false,
     "canControlStrafe": false,
-    "immuneToFire": true,
+    "immuneToFire": false,
     "immuneToArrows": true,
     "immuneToFallDamage": false,
     "immuneToCactus": false,
@@ -142,6 +142,9 @@
     "rangedAttackRadius": 10.0,
     "spawnThisMob": true,
     "doesDespawnWhenIdle": true,
+    "spawningCondition": {
+      "name": "HollowNaturalEntitySpawningCondition"
+    },
     "spawningProbability": 1,
     "mobSpawningType": "monster",
     "minNumberOfMobsPerGroup": 1,

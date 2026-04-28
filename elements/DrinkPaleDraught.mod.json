@@ -14,7 +14,7 @@
     "hideIfNotCompleted": false,
     "rewardLoot": [],
     "rewardRecipes": [],
-    "rewardXP": 0,
+    "rewardXP": 1,
     "achievementType": "task",
     "parent": {
       "value": "CUSTOM:EnterStill"

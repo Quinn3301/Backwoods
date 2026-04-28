@@ -9,7 +9,7 @@
     ],
     "worldGenType": "Normal world gen",
     "mainFillerBlock": {
-      "value": "Blocks.STONE#0"
+      "value": "CUSTOM:Nullstone"
     },
     "fluidBlock": {
       "value": "Blocks.WATER"

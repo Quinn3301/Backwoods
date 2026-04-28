@@ -42,9 +42,6 @@
     "onRightClickedInAir": {
       "name": "RotEffigyRightclicked"
     },
-    "onItemInUseTick": {
-      "name": "RotEffigyItemInHandTick"
-    },
     "enableRanged": false,
     "shootConstantly": false,
     "rangedItemChargesPower": false,

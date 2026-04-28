@@ -25,13 +25,13 @@
       "falpha": 0.0
     },
     "ambientSound": {
-      "value": "CUSTOM:still_ambient2"
-    },
-    "additionsSound": {
       "value": ""
     },
+    "additionsSound": {
+      "value": "CUSTOM:familiar_ambient_1"
+    },
     "music": {
-      "value": "CUSTOM:still_music"
+      "value": ""
     },
     "moodSound": {
       "value": "CUSTOM:still_mood3"
@@ -158,7 +158,7 @@
       },
       {
         "entity": {
-          "value": "CUSTOM:Splinter"
+          "value": "EntityCreeper"
         },
         "minGroup": 2,
         "maxGroup": 4,

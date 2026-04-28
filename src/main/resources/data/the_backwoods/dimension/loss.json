@@ -27,7 +27,7 @@
       "aquifers_enabled": true,
       "ore_veins_enabled": false,
       "default_block": {
-        "Name": "minecraft:stone"
+        "Name": "the_backwoods:nullstone"
       },
       "default_fluid": {
         "Name": "minecraft:water",
@@ -397,10 +397,7 @@
                           "then_run": {
                             "type": "minecraft:block",
                             "result_state": {
-                              "Name": "the_backwoods:faded_block",
-                              "Properties": {
-                                "facing": "north"
-                              }
+                              "Name": "the_backwoods:faded_block"
                             }
                           }
                         },

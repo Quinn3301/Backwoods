@@ -30,7 +30,7 @@ public class RottenOakPlanksBlock extends Block {
 				.sound(new DeferredSoundType(1.0f, 1.0f, () -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.wood.break")), () -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("the_backwoods:rotten_planks_step")),
 						() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.cherry_wood.place")), () -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("the_backwoods:rotten_planks_break")),
 						() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.cherry_wood.place"))))
-				.strength(3f, 15f).friction(0.8f).randomTicks().instrument(NoteBlockInstrument.DIDGERIDOO));
+				.strength(3f, 15f).friction(0.8f).randomTicks().ignitedByLava().instrument(NoteBlockInstrument.DIDGERIDOO));
 	}
 
 	@Override
@@ -38,7 +38,6 @@ public class RottenOakPlanksBlock extends Block {
 	public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
 		super.appendHoverText(itemstack, context, list, flag);
 		list.add(Component.translatable("block.the_backwoods.rotten_oak_planks.description_0"));
-		list.add(Component.translatable("block.the_backwoods.rotten_oak_planks.description_1"));
 	}
 
 	@Override

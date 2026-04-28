@@ -15,7 +15,7 @@
     "rewardLoot": [],
     "rewardRecipes": [],
     "rewardXP": 5,
-    "achievementType": "task",
+    "achievementType": "goal",
     "parent": {
       "value": "CUSTOM:EnterRottingDimension"
     },

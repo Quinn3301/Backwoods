@@ -10,7 +10,7 @@
     "textureBack": "petrified_rotting_oak_log",
     "renderType": 10,
     "customModelName": "Normal",
-    "rotationMode": 2,
+    "rotationMode": 5,
     "enablePitch": false,
     "emissiveRendering": false,
     "displayFluidOverlay": false,
@@ -45,17 +45,17 @@
         "§8Tainted wood. It drains your life."
       ]
     },
-    "hardness": 15.0,
-    "resistance": 512.0,
+    "hardness": 21.0,
+    "resistance": 23.0,
     "hasGravity": false,
     "isWaterloggable": false,
     "hasBlockItem": true,
     "maxStackSize": 64,
-    "rarity": "UNCOMMON",
+    "rarity": "COMMON",
     "immuneToFire": false,
     "creativeTabs": [
       {
-        "value": "BUILDING_BLOCKS"
+        "value": "DECORATIONS"
       }
     ],
     "destroyTool": "axe",
@@ -72,13 +72,13 @@
     "canRedstoneConnect": false,
     "lightOpacity": 15,
     "tickRate": 0,
-    "tickRandomly": true,
+    "tickRandomly": false,
     "isReplaceable": false,
     "canProvidePower": false,
     "emittedRedstonePower": {
       "fixedValue": 15.0
     },
-    "colorOnMap": "DEEPSLATE_GRAY",
+    "colorOnMap": "BROWN_TERRACOTTA",
     "noteBlockInstrument": "didgeridoo",
     "creativePickItem": {
       "value": ""
@@ -118,7 +118,7 @@
     },
     "luminance": 0,
     "unbreakable": false,
-    "vanillaToolTier": "NONE",
+    "vanillaToolTier": "IRON",
     "isBonemealable": false,
     "sensitiveToVibration": false,
     "vibrationalEvents": [],
@@ -141,9 +141,6 @@
     "isFluidTank": false,
     "fluidCapacity": 8000,
     "fluidRestrictions": [],
-    "onTickUpdate": {
-      "name": "RottenOakSpreadOnTickUpdate"
-    },
     "generateFeature": false,
     "restrictionBiomes": [],
     "blocksToReplace": [

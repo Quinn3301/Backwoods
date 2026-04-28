@@ -6,6 +6,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -21,6 +22,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -31,6 +33,7 @@ import net.minecraft.core.BlockPos;
 
 import net.mcreator.thebackwoods.procedures.AshWeaverOnEntityTickUpdateProcedure;
 import net.mcreator.thebackwoods.init.TheBackwoodsModEntities;
+import net.mcreator.thebackwoods.init.TheBackwoodsModBlocks;
 
 public class AshWeaverEntity extends PathfinderMob {
 	public static final EntityDataAccessor<Integer> DATA_roseCooldown = SynchedEntityData.defineId(AshWeaverEntity.class, EntityDataSerializers.INT);
@@ -69,6 +72,11 @@ public class AshWeaverEntity extends PathfinderMob {
 	@Override
 	public Vec3 getPassengerRidingPosition(Entity entity) {
 		return super.getPassengerRidingPosition(entity).add(0, -0.35F, 0);
+	}
+
+	protected void dropCustomDeathLoot(ServerLevel serverLevel, DamageSource source, boolean recentlyHitIn) {
+		super.dropCustomDeathLoot(serverLevel, source, recentlyHitIn);
+		this.spawnAtLocation(new ItemStack(TheBackwoodsModBlocks.ASH_ROSE.get()));
 	}
 
 	@Override

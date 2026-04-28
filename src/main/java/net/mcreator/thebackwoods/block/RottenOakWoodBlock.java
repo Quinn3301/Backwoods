@@ -39,7 +39,7 @@ public class RottenOakWoodBlock extends Block {
 				.sound(new DeferredSoundType(1.0f, 1.0f, () -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.wood.break")), () -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("the_backwoods:rotten_planks_step")),
 						() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.cherry_wood.place")), () -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("the_backwoods:rotten_planks_break")),
 						() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.cherry_wood.place"))))
-				.strength(3f, 15f).friction(0.8f).randomTicks().instrument(NoteBlockInstrument.DIDGERIDOO));
+				.strength(3f, 15f).friction(0.8f).randomTicks().ignitedByLava().instrument(NoteBlockInstrument.DIDGERIDOO));
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
 
@@ -72,6 +72,11 @@ public class RottenOakWoodBlock extends Block {
 
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
 		return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
+	}
+
+	@Override
+	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+		return 5;
 	}
 
 	@Override

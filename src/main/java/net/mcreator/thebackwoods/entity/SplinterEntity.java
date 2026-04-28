@@ -16,6 +16,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -37,7 +38,6 @@ import net.minecraft.core.BlockPos;
 
 import net.mcreator.thebackwoods.procedures.SplinterOnInitialEntitySpawnProcedure;
 import net.mcreator.thebackwoods.procedures.SplinterOnEntityTickUpdateProcedure;
-import net.mcreator.thebackwoods.procedures.SplinterEntityDiesProcedure;
 import net.mcreator.thebackwoods.init.TheBackwoodsModEntities;
 
 import javax.annotation.Nullable;
@@ -52,6 +52,7 @@ public class SplinterEntity extends Monster {
 	public static final EntityDataAccessor<Integer> DATA_scan_timer = SynchedEntityData.defineId(SplinterEntity.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> DATA_watchTimer = SynchedEntityData.defineId(SplinterEntity.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Integer> DATA_isEnraged = SynchedEntityData.defineId(SplinterEntity.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> DATA_stalkTimer = SynchedEntityData.defineId(SplinterEntity.class, EntityDataSerializers.INT);
 
 	public SplinterEntity(EntityType<SplinterEntity> type, Level world) {
 		super(type, world);
@@ -71,11 +72,13 @@ public class SplinterEntity extends Monster {
 		builder.define(DATA_scan_timer, 0);
 		builder.define(DATA_watchTimer, 0);
 		builder.define(DATA_isEnraged, 0);
+		builder.define(DATA_stalkTimer, 0);
 	}
 
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
+		this.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
 		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.3, true) {
 			@Override
 			protected boolean canPerformAttack(LivingEntity entity) {
@@ -85,6 +88,7 @@ public class SplinterEntity extends Monster {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Player.class, true, false));
 		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, AshWeaverEntity.class, true, false));
 		this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, (float) 32));
+		this.goalSelector.addGoal(5, new OpenDoorGoal(this, true));
 	}
 
 	@Override
@@ -133,12 +137,6 @@ public class SplinterEntity extends Monster {
 	}
 
 	@Override
-	public void die(DamageSource source) {
-		super.die(source);
-		SplinterEntityDiesProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
-	}
-
-	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata) {
 		SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata);
 		SplinterOnInitialEntitySpawnProcedure.execute(this);
@@ -157,6 +155,7 @@ public class SplinterEntity extends Monster {
 		compound.putInt("Datascan_timer", this.entityData.get(DATA_scan_timer));
 		compound.putInt("DatawatchTimer", this.entityData.get(DATA_watchTimer));
 		compound.putInt("DataisEnraged", this.entityData.get(DATA_isEnraged));
+		compound.putInt("DatastalkTimer", this.entityData.get(DATA_stalkTimer));
 	}
 
 	@Override
@@ -180,6 +179,8 @@ public class SplinterEntity extends Monster {
 			this.entityData.set(DATA_watchTimer, compound.getInt("DatawatchTimer"));
 		if (compound.contains("DataisEnraged"))
 			this.entityData.set(DATA_isEnraged, compound.getInt("DataisEnraged"));
+		if (compound.contains("DatastalkTimer"))
+			this.entityData.set(DATA_stalkTimer, compound.getInt("DatastalkTimer"));
 	}
 
 	@Override
@@ -198,16 +199,6 @@ public class SplinterEntity extends Monster {
 		return false;
 	}
 
-	@Override
-	public boolean isPushedByFluid() {
-		double x = this.getX();
-		double y = this.getY();
-		double z = this.getZ();
-		Level world = this.level();
-		Entity entity = this;
-		return false;
-	}
-
 	public static void init(RegisterSpawnPlacementsEvent event) {
 		event.register(TheBackwoodsModEntities.SPLINTER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 				(entityType, world, reason, pos, random) -> (world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random) && Mob.checkMobSpawnRules(entityType, world, reason, pos, random)),
@@ -216,7 +207,7 @@ public class SplinterEntity extends Monster {
 
 	public static AttributeSupplier.Builder createAttributes() {
 		AttributeSupplier.Builder builder = Mob.createMobAttributes();
-		builder = builder.add(Attributes.MOVEMENT_SPEED, 0.35);
+		builder = builder.add(Attributes.MOVEMENT_SPEED, 0.325);
 		builder = builder.add(Attributes.MAX_HEALTH, 30);
 		builder = builder.add(Attributes.ARMOR, 0);
 		builder = builder.add(Attributes.ATTACK_DAMAGE, 6);

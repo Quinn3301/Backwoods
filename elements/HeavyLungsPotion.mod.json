@@ -1,0 +1,50 @@
+{
+  "_fv": 79,
+  "_type": "potioneffect",
+  "definition": {
+    "effectName": "Heavy Lungs",
+    "icon": "heavy_lungs",
+    "color": {
+      "value": -11908534,
+      "falpha": 0.0
+    },
+    "onAddedSound": {
+      "value": ""
+    },
+    "isInstant": false,
+    "mobEffectCategory": "HARMFUL",
+    "renderStatusInInventory": true,
+    "renderStatusInHUD": true,
+    "isCuredbyHoney": false,
+    "modifiers": [
+      {
+        "attribute": {
+          "value": "MOVEMENT_SPEED"
+        },
+        "amount": -0.2,
+        "operation": "ADD_MULTIPLIED_BASE"
+      },
+      {
+        "attribute": {
+          "value": "ATTACK_SPEED"
+        },
+        "amount": -0.15,
+        "operation": "ADD_MULTIPLIED_BASE"
+      },
+      {
+        "attribute": {
+          "value": "MINING_EFFICIENCY"
+        },
+        "amount": -0.3,
+        "operation": "ADD_MULTIPLIED_BASE"
+      },
+      {
+        "attribute": {
+          "value": "OXYGEN_BONUS"
+        },
+        "amount": -0.2,
+        "operation": "ADD_MULTIPLIED_BASE"
+      }
+    ]
+  }
+}

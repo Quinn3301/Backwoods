@@ -26,9 +26,13 @@ public class TheBackwoodsModEntities {
 
 					.ridingOffset(-0.6f).sized(0.6f, 1.8f));
 	public static final DeferredHolder<EntityType<?>, EntityType<HollowEntity>> HOLLOW = register("hollow",
-			EntityType.Builder.<HollowEntity>of(HollowEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).fireImmune().ridingOffset(-0.6f).sized(0.6f, 1.8f));
+			EntityType.Builder.<HollowEntity>of(HollowEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3)
+
+					.ridingOffset(-0.6f).sized(0.6f, 1.8f));
 	public static final DeferredHolder<EntityType<?>, EntityType<LogSplinterEntity>> LOG_SPLINTER = register("log_splinter",
-			EntityType.Builder.<LogSplinterEntity>of(LogSplinterEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).fireImmune().ridingOffset(-0.6f).sized(0.6f, 1.8f));
+			EntityType.Builder.<LogSplinterEntity>of(LogSplinterEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3)
+
+					.ridingOffset(-0.6f).sized(0.6f, 1.8f));
 	public static final DeferredHolder<EntityType<?>, EntityType<AshWeaverEntity>> ASH_WEAVER = register("ash_weaver",
 			EntityType.Builder.<AshWeaverEntity>of(AshWeaverEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3)
 
@@ -39,6 +43,8 @@ public class TheBackwoodsModEntities {
 			EntityType.Builder.<BlindspotSplinterEntity>of(BlindspotSplinterEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3)
 
 					.ridingOffset(-0.6f).sized(0.6f, 1.8f));
+	public static final DeferredHolder<EntityType<?>, EntityType<PetrifiedLogSplinterEntity>> PETRIFIED_LOG_SPLINTER = register("petrified_log_splinter",
+			EntityType.Builder.<PetrifiedLogSplinterEntity>of(PetrifiedLogSplinterEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).fireImmune().ridingOffset(-0.6f).sized(0.6f, 1.8f));
 
 	// Start of user code block custom entities
 	// End of user code block custom entities
@@ -54,6 +60,7 @@ public class TheBackwoodsModEntities {
 		AshWeaverEntity.init(event);
 		RotEntity.init(event);
 		BlindspotSplinterEntity.init(event);
+		PetrifiedLogSplinterEntity.init(event);
 	}
 
 	@SubscribeEvent
@@ -64,5 +71,6 @@ public class TheBackwoodsModEntities {
 		event.put(ASH_WEAVER.get(), AshWeaverEntity.createAttributes().build());
 		event.put(ROT.get(), RotEntity.createAttributes().build());
 		event.put(BLINDSPOT_SPLINTER.get(), BlindspotSplinterEntity.createAttributes().build());
+		event.put(PETRIFIED_LOG_SPLINTER.get(), PetrifiedLogSplinterEntity.createAttributes().build());
 	}
 }

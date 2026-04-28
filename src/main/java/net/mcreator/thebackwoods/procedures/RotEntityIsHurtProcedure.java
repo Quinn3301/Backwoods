@@ -117,7 +117,7 @@ public class RotEntityIsHurtProcedure {
 					}
 				}
 				if (world instanceof ServerLevel _level)
-					_level.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, (entity.getX()), (entity.getY() + 1), (entity.getZ()), 200, 0.1, 0.1, 0.1, 0.1);
+					_level.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, (entity.getX()), (entity.getY() + 1.1), (entity.getZ()), 100, 0.1, 0.1, 0.1, 0);
 				if (!entity.level().isClientSide())
 					entity.discard();
 				if (attacker instanceof ServerPlayer _player) {

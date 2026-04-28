@@ -107,7 +107,7 @@ public class GrainSkyEntryProcedure {
             }
             
             // Perform the swap while upward momentum is technically still registered
-            _player.teleportTo(grainLevel, _player.getX(), 310.0, _player.getZ(), _player.getYRot(), _player.getXRot());
+            _player.teleportTo(grainLevel, _player.getX(), 250.0, _player.getZ(), _player.getYRot(), _player.getXRot());
             
             // Finalize State
             ascensionTimers.remove(playerUUID);

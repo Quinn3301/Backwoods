@@ -23,7 +23,7 @@ public class RottenAxeItem extends AxeItem {
 
 		@Override
 		public float getSpeed() {
-			return 4f;
+			return 1.9f;
 		}
 
 		@Override

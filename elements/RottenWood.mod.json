@@ -10,7 +10,7 @@
     "xpReward": 0.0,
     "cookingTime": 200,
     "craftingBookCategory": "BUILDING",
-    "recipeShapeless": false,
+    "recipeShapeless": true,
     "recipeSlots": [
       {
         "value": "CUSTOM:RottenOakLog"

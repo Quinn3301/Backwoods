@@ -18,7 +18,7 @@ public class RottenShovelItem extends ShovelItem {
 
 		@Override
 		public float getSpeed() {
-			return 5.5f;
+			return 1.9f;
 		}
 
 		@Override

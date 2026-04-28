@@ -3,18 +3,15 @@
   "temperature": 0.5,
   "downfall": 0.5,
   "effects": {
-    "ambient_sound": "the_backwoods:still_ambient2",
     "mood_sound": {
       "sound": "the_backwoods:still_mood3",
       "tick_delay": 6000,
       "offset": 8,
       "block_search_extent": 2
     },
-    "music": {
-      "sound": "the_backwoods:still_music",
-      "min_delay": 12000,
-      "max_delay": 24000,
-      "replace_current_music": true
+    "additions_sound": {
+      "sound": "the_backwoods:familiar_ambient_1",
+      "tick_chance": 0.0111
     },
     "foliage_color": -8934609,
     "grass_color": -7226023,
@@ -38,7 +35,7 @@
         "maxCount": 4
       },
       {
-        "type": "the_backwoods:splinter",
+        "type": "creeper",
         "weight": 100,
         "minCount": 2,
         "maxCount": 4

@@ -41,6 +41,9 @@
     "minMonsterSpawnLightLimit": 0,
     "maxMonsterSpawnLightLimit": 7,
     "monsterSpawnBlockLightLimit": 0,
+    "onPlayerEntersDimension": {
+      "name": "RottingPlayerEntersDimension"
+    },
     "portalFrame": {
       "value": ""
     },

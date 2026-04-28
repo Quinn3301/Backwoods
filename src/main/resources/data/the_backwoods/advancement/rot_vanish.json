@@ -19,5 +19,8 @@
       "trigger": "minecraft:impossible"
     }
   },
+  "rewards": {
+    "experience": 16
+  },
   "parent": "the_backwoods:enter_backwoods"
 }

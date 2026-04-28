@@ -103,7 +103,7 @@
     "immuneToWither": false,
     "immuneToDragonBreath": false,
     "mobDrop": {
-      "value": ""
+      "value": "CUSTOM:AshRose"
     },
     "livingSound": {
       "value": "CUSTOM:splinter_idle"

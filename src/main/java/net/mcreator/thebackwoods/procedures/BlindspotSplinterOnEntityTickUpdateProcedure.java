@@ -21,6 +21,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.util.Mth;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.server.level.ServerLevel;
@@ -44,7 +45,7 @@ import java.util.Comparator;
 public class BlindspotSplinterOnEntityTickUpdateProcedure {
 
 	private static final double WATCH_DOT_THRESHOLD = 0.5;
-	private static final double ACTIVE_MOVE_SPEED = 0.325;
+	private static final double ACTIVE_MOVE_SPEED = 0.335;
 	private static final float MINE_SPEED_MULTIPLIER = 50f;
 	private static final float MINE_SPEED_BASE = 50f;
 	private static final float MAX_BREAKABLE_HARDNESS = 50f;
@@ -56,7 +57,7 @@ public class BlindspotSplinterOnEntityTickUpdateProcedure {
 	private static final int ROSE_SCAN_Y = 3;
 
 	// How many ticks the player must stare before rage triggers
-	private static final int RAGE_WATCH_THRESHOLD = 290;
+	private static final int RAGE_WATCH_THRESHOLD = 590;
 
 	// Blindspot Splinter must be beyond this range for rage to end
 	private static final double RAGE_ESCAPE_RANGE = 16.0;
@@ -66,6 +67,7 @@ public class BlindspotSplinterOnEntityTickUpdateProcedure {
 		execute(event, event.getEntity().level(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), event.getEntity());
 	}
 
+	// DO NOT DELETE: This empty method prevents the "no suitable method found" error in the Entity class
 	public static void execute() {
 	}
 
@@ -74,15 +76,21 @@ public class BlindspotSplinterOnEntityTickUpdateProcedure {
 	}
 
 	private static void execute(@Nullable Event event, LevelAccessor world, double x, double y, double z, Entity entity) {
-		if (entity == null)
+		if (entity == null || !(entity instanceof BlindspotSplinterEntity))
 			return;
-		if (!(entity instanceof BlindspotSplinterEntity))
-			return;
+
+		// 1. Force exit from boats
+		if (entity.isPassenger()) {
+			Entity vehicle = entity.getVehicle();
+			if (vehicle instanceof net.minecraft.world.entity.vehicle.Boat || vehicle instanceof net.minecraft.world.entity.vehicle.ChestBoat) {
+				entity.stopRiding();
+				entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.2, 0));
+			}
+		}
 
 		final Vec3 center = new Vec3(x, y, z);
 
-		for (BlindspotSplinterEntity splinter : world.getEntitiesOfClass(BlindspotSplinterEntity.class, new AABB(center, center).inflate(SPLINTER_SCAN_RADIUS), e -> true)
-				.stream().sorted(Comparator.comparingDouble(e -> e.distanceToSqr(center))).toList()) {
+		for (BlindspotSplinterEntity splinter : world.getEntitiesOfClass(BlindspotSplinterEntity.class, new AABB(center, center).inflate(SPLINTER_SCAN_RADIUS), e -> true).stream().sorted(Comparator.comparingDouble(e -> e.distanceToSqr(center))).toList()) {
 
 			Player foundPlayer = (Player) findEntityInWorldRange(world, Player.class, splinter.getX(), splinter.getY(), splinter.getZ(), TARGET_RANGE);
 			if (foundPlayer == null) {
@@ -105,7 +113,6 @@ public class BlindspotSplinterOnEntityTickUpdateProcedure {
 			boolean canSee = foundPlayer.hasLineOfSight(splinter);
 			boolean isWatched = facing && canSee;
 
-			// Check if player has escaped range to calm rage
 			double distToPlayer = splinter.position().distanceTo(foundPlayer.position());
 			if (isEnraged == 1 && distToPlayer > RAGE_ESCAPE_RANGE) {
 				splinter.getEntityData().set(BlindspotSplinterEntity.DATA_isEnraged, 0);
@@ -113,7 +120,6 @@ public class BlindspotSplinterOnEntityTickUpdateProcedure {
 				isEnraged = 0;
 			}
 
-			// Increment or reset watch timer
 			if (isWatched && isEnraged == 0) {
 				watchTimer++;
 				splinter.getEntityData().set(BlindspotSplinterEntity.DATA_watchTimer, watchTimer);
@@ -126,7 +132,6 @@ public class BlindspotSplinterOnEntityTickUpdateProcedure {
 				splinter.getEntityData().set(BlindspotSplinterEntity.DATA_watchTimer, 0);
 			}
 
-			// Freeze logic - enraged blindspot splinter ignores gaze
 			if ((isWatched && isEnraged == 0) || frozenByRose == 1) {
 				setSpeed(splinter, 0);
 				if (splinter instanceof Mob mob) {
@@ -155,6 +160,11 @@ public class BlindspotSplinterOnEntityTickUpdateProcedure {
 					int mineProgress = splinter.getEntityData().get(BlindspotSplinterEntity.DATA_mineProgress) + 1;
 					splinter.getEntityData().set(BlindspotSplinterEntity.DATA_mineProgress, mineProgress);
 
+					// Arm Swing logic
+					if (splinter.tickCount % 6 == 0) {
+						splinter.swing(InteractionHand.MAIN_HAND, true);
+					}
+
 					BlockPos trackPos = canMineFeet ? feetPos : facePos;
 					splinter.getEntityData().set(BlindspotSplinterEntity.DATA_mineX, trackPos.getX());
 					splinter.getEntityData().set(BlindspotSplinterEntity.DATA_mineY, trackPos.getY());
@@ -166,15 +176,13 @@ public class BlindspotSplinterOnEntityTickUpdateProcedure {
 					if (mineProgress > mineThreshold) {
 						if (canMineFeet) {
 							world.destroyBlock(feetPos, false);
-							if (world instanceof Level level) {
+							if (world instanceof Level level)
 								level.updateNeighborsAt(feetPos, level.getBlockState(feetPos).getBlock());
-							}
 						}
 						if (canMineFace) {
 							world.destroyBlock(facePos, false);
-							if (world instanceof Level level) {
+							if (world instanceof Level level)
 								level.updateNeighborsAt(facePos, level.getBlockState(facePos).getBlock());
-							}
 						}
 						if (splinter instanceof Mob mob) {
 							mob.getNavigation().stop();
@@ -212,7 +220,6 @@ public class BlindspotSplinterOnEntityTickUpdateProcedure {
 			}
 
 			boolean foundRose = checkHeldRose(foundPlayer, splinter, world, foundPlayer.getX(), foundPlayer.getY(), foundPlayer.getZ());
-
 			if (!foundRose && splinter.tickCount % 5 == 0) {
 				foundRose = checkNearbyRoseBlocks(world, splinter);
 			}
@@ -234,13 +241,10 @@ public class BlindspotSplinterOnEntityTickUpdateProcedure {
 			Object localPlayer = minecraft.getClass().getField("player").get(minecraft);
 			if (localPlayer == null || localPlayer != player)
 				return false;
-
 			Object options = minecraft.getClass().getField("options").get(minecraft);
 			Object cameraType = options.getClass().getMethod("getCameraType").invoke(options);
-
 			boolean isMirrored = (boolean) cameraType.getClass().getMethod("isMirrored").invoke(cameraType);
 			boolean isFirstPerson = (boolean) cameraType.getClass().getMethod("isFirstPerson").invoke(cameraType);
-
 			return isMirrored && !isFirstPerson;
 		} catch (Throwable ignored) {
 			return false;
@@ -265,33 +269,26 @@ public class BlindspotSplinterOnEntityTickUpdateProcedure {
 	private static boolean checkHeldRose(Entity holder, BlindspotSplinterEntity splinter, LevelAccessor world, double x, double y, double z) {
 		if (!(holder instanceof LivingEntity living))
 			return false;
-
 		ItemStack main = living.getMainHandItem();
 		ItemStack off = living.getOffhandItem();
-
 		boolean mainIsRose = main.getItem() == TheBackwoodsModBlocks.ASH_ROSE.get().asItem();
 		boolean offIsRose = off.getItem() == TheBackwoodsModBlocks.ASH_ROSE.get().asItem();
-
 		if (!mainIsRose && !offIsRose)
 			return false;
-
 		setSpeed(splinter, 0);
 		if (splinter instanceof Mob mob) {
 			mob.getNavigation().stop();
 		}
-
 		if (mainIsRose)
 			tickRoseItem(main, world, x, y, z);
 		if (offIsRose)
 			tickRoseItem(off, world, x, y, z);
-
 		return true;
 	}
 
 	private static void tickRoseItem(ItemStack rose, LevelAccessor world, double x, double y, double z) {
 		double wiltTimer = rose.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getDouble("wilt_timer") + 1;
 		CustomData.update(DataComponents.CUSTOM_DATA, rose, tag -> tag.putDouble("wilt_timer", wiltTimer));
-
 		if (wiltTimer > ROSE_WILT_TICKS) {
 			if (world instanceof Level level) {
 				if (!level.isClientSide()) {
@@ -320,7 +317,6 @@ public class BlindspotSplinterOnEntityTickUpdateProcedure {
 	}
 
 	private static Entity findEntityInWorldRange(LevelAccessor world, Class<? extends Entity> clazz, double x, double y, double z, double range) {
-		return world.getEntitiesOfClass(clazz, AABB.ofSize(new Vec3(x, y, z), range, range, range), e -> true)
-				.stream().sorted(Comparator.comparingDouble(e -> e.distanceToSqr(x, y, z))).findFirst().orElse(null);
+		return world.getEntitiesOfClass(clazz, AABB.ofSize(new Vec3(x, y, z), range, range, range), e -> true).stream().sorted(Comparator.comparingDouble(e -> e.distanceToSqr(x, y, z))).findFirst().orElse(null);
 	}
 }

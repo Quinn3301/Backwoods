@@ -145,6 +145,15 @@
         "maxGroup": 4,
         "weight": 16,
         "spawnType": "monster"
+      },
+      {
+        "entity": {
+          "value": "CUSTOM:PetrifiedLogSplinter"
+        },
+        "minGroup": 4,
+        "maxGroup": 4,
+        "weight": 19,
+        "spawnType": "monster"
       }
     ]
   }

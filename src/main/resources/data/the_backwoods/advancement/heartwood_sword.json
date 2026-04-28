@@ -33,7 +33,7 @@
     }
   },
   "rewards": {
-    "experience": 4
+    "experience": 8
   },
   "parent": "the_backwoods:enter_rotting_dimension"
 }

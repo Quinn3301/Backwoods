@@ -45,7 +45,7 @@ public class RotNaturalEntitySpawningConditionProcedure {
 		if (entity == null)
 			return;
 		if (Math.random() < (1) / ((float) 1200)) {
-			if ((entity.level().dimension()) == ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("the_backwoods:backwoods")) && (entity instanceof LivingEntity _livEnt ? _livEnt.getArmorValue() : 0) >= 19
+			if ((entity.level().dimension()) == ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("the_backwoods:backwoods")) && (entity instanceof LivingEntity _livEnt ? _livEnt.getArmorValue() : 0) > 20
 					&& !(!world.getEntitiesOfClass(RotEntity.class, new AABB(Vec3.ZERO, Vec3.ZERO).move(new Vec3(x, y, z)).inflate(128 / 2d), e -> true).isEmpty())) {
 				if (entity instanceof Player _player && !_player.level().isClientSide())
 					_player.displayClientMessage(Component.literal("You seem prepared."), true);

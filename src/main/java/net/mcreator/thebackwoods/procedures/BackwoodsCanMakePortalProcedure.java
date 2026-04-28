@@ -23,13 +23,29 @@ public class BackwoodsCanMakePortalProcedure {
 		if (entity == null)
 			return false;
 		double roll = 0;
-		if ((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getItem() == TheBackwoodsModItems.BACKWOODS.get()) {
+		double successNeeded = 0;
+		if ((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getItem() == TheBackwoodsModItems.BACKWOODS.get()
+				|| (entity instanceof LivingEntity _livEnt ? _livEnt.getOffhandItem() : ItemStack.EMPTY).getItem() == TheBackwoodsModItems.BACKWOODS.get()) {
 			itemstack.shrink(1);
 			if ((entity.level().dimension()) == ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("the_backwoods:backwoods"))) {
-				roll = Mth.nextInt(RandomSource.create(), 1, 10);
-				if (roll > 6) {
-					return true;
-				}
+				successNeeded = 6;
+			} else if ((entity.level().dimension()) == ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("the_backwoods:loss"))) {
+				successNeeded = 9;
+			} else if ((entity.level().dimension()) == ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("the_backwoods:rotting"))) {
+				successNeeded = 8;
+			} else if ((entity.level().dimension()) == ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("the_backwoods:the_still"))) {
+				successNeeded = 7;
+			} else if ((entity.level().dimension()) == ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("the_backwoods:the_familiar"))) {
+				successNeeded = 9;
+			} else if ((entity.level().dimension()) == Level.OVERWORLD) {
+				successNeeded = 2;
+			} else {
+				successNeeded = 9;
+			}
+			roll = Mth.nextInt(RandomSource.create(), 1, 10);
+			if (roll > successNeeded) {
+				return true;
+			} else {
 				if (world instanceof Level _level) {
 					if (!_level.isClientSide()) {
 						_level.playSound(null, BlockPos.containing(entity.getX(), entity.getY(), entity.getZ()), BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.fire.extinguish")), SoundSource.NEUTRAL, (float) 0.8, 1);
@@ -41,7 +57,6 @@ public class BackwoodsCanMakePortalProcedure {
 					_level.sendParticles(ParticleTypes.SMOKE, (entity.getX()), (entity.getY()), (entity.getZ()), 15, 1, 1, 1, 0.1);
 				return false;
 			}
-			return true;
 		}
 		return false;
 	}

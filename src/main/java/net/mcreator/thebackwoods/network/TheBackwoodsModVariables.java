@@ -85,6 +85,8 @@ public class TheBackwoodsModVariables {
 		clone.music_stopped_s4 = original.music_stopped_s4;
 		clone.dayIncrementedToday = original.dayIncrementedToday;
 		clone.daysInFamiliar = original.daysInFamiliar;
+		clone.lossProgress = original.lossProgress;
+		clone.lossTimer = original.lossTimer;
 		if (!event.isWasDeath()) {
 		}
 		event.getEntity().setData(PLAYER_VARIABLES, clone);
@@ -97,6 +99,8 @@ public class TheBackwoodsModVariables {
 		public double music_stopped_s4 = 0;
 		public boolean dayIncrementedToday = false;
 		public double daysInFamiliar = 0;
+		public double lossProgress = 0.0;
+		public double lossTimer = 0;
 
 		@Override
 		public CompoundTag serializeNBT(HolderLookup.Provider lookupProvider) {
@@ -106,6 +110,8 @@ public class TheBackwoodsModVariables {
 			nbt.putDouble("music_stopped_s4", music_stopped_s4);
 			nbt.putBoolean("dayIncrementedToday", dayIncrementedToday);
 			nbt.putDouble("daysInFamiliar", daysInFamiliar);
+			nbt.putDouble("lossProgress", lossProgress);
+			nbt.putDouble("lossTimer", lossTimer);
 			return nbt;
 		}
 
@@ -116,6 +122,8 @@ public class TheBackwoodsModVariables {
 			music_stopped_s4 = nbt.getDouble("music_stopped_s4");
 			dayIncrementedToday = nbt.getBoolean("dayIncrementedToday");
 			daysInFamiliar = nbt.getDouble("daysInFamiliar");
+			lossProgress = nbt.getDouble("lossProgress");
+			lossTimer = nbt.getDouble("lossTimer");
 		}
 
 		public void markSyncDirty() {

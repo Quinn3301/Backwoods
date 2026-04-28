@@ -131,15 +131,6 @@
       },
       {
         "entity": {
-          "value": "EntityCamel"
-        },
-        "minGroup": 1,
-        "maxGroup": 1,
-        "weight": 3,
-        "spawnType": "creature"
-      },
-      {
-        "entity": {
           "value": "EntityGlowSquid"
         },
         "minGroup": 4,

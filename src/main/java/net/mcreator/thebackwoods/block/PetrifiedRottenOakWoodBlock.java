@@ -6,41 +6,37 @@ import net.neoforged.api.distmarker.Dist;
 
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
-import net.minecraft.util.RandomSource;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 
-import net.mcreator.thebackwoods.procedures.RottenOakSpreadOnTickUpdateProcedure;
-
 import java.util.List;
 
 public class PetrifiedRottenOakWoodBlock extends Block {
-	public static final DirectionProperty FACING = DirectionalBlock.FACING;
+	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
 
 	public PetrifiedRottenOakWoodBlock() {
-		super(BlockBehaviour.Properties.of().mapColor(MapColor.DEEPSLATE)
+		super(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_BROWN)
 				.sound(new DeferredSoundType(1.0f, 1.0f, () -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.wood.break")), () -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("the_backwoods:rotten_planks_step")),
 						() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.cherry_wood.place")), () -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("the_backwoods:rotten_planks_break")),
 						() -> BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.cherry_wood.place"))))
-				.strength(15f, 512f).friction(0.7f).randomTicks().instrument(NoteBlockInstrument.DIDGERIDOO));
-		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+				.strength(21f, 23f).friction(0.7f).instrument(NoteBlockInstrument.DIDGERIDOO));
+		this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Direction.Axis.Y));
 	}
 
 	@Override
@@ -58,25 +54,16 @@ public class PetrifiedRottenOakWoodBlock extends Block {
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
-		builder.add(FACING);
+		builder.add(AXIS);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return super.getStateForPlacement(context).setValue(FACING, context.getNearestLookingDirection().getOpposite());
-	}
-
-	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
-	}
-
-	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
+		return super.getStateForPlacement(context).setValue(AXIS, context.getClickedFace().getAxis());
 	}
 
 	@Override
-	public void randomTick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
-		super.randomTick(blockstate, world, pos, random);
-		RottenOakSpreadOnTickUpdateProcedure.execute(world, pos.getX(), pos.getY(), pos.getZ());
+	public BlockState rotate(BlockState state, Rotation rot) {
+		return RotatedPillarBlock.rotatePillar(state, rot);
 	}
 }

@@ -1,0 +1,42 @@
+{
+  "_fv": 79,
+  "_type": "tool",
+  "definition": {
+    "toolType": "Hoe",
+    "renderType": 0,
+    "blockingRenderType": 0,
+    "texture": "recovered_faded_hoe",
+    "customModelName": "Normal",
+    "blockingModelName": "Normal blocking",
+    "guiTexture": "",
+    "name": "Recovered Faded Hoe",
+    "specialInformation": {
+      "fixedValue": []
+    },
+    "creativeTabs": [
+      {
+        "value": "TOOLS"
+      }
+    ],
+    "efficiency": 2.0,
+    "attackSpeed": 4.0,
+    "enchantability": 1,
+    "damageVsEntity": 1.0,
+    "usageCount": 60,
+    "glowCondition": {
+      "fixedValue": false
+    },
+    "repairItems": [],
+    "immuneToFire": false,
+    "blockDropsTier": "WOOD",
+    "blocksAffected": [],
+    "stayInGridWhenCrafting": false,
+    "damageOnCrafting": false,
+    "onRightClickedOnBlock": {
+      "name": "RecoveredFadedHoeRightclickedOnBlock"
+    },
+    "onItemInInventoryTick": {
+      "name": "RecoveredFadedHoeToolInInventoryTick"
+    }
+  }
+}

@@ -95,7 +95,7 @@
       "value": ""
     },
     "offsetType": "XZ",
-    "aiPathNodeType": "DAMAGE_CAUTIOUS",
+    "aiPathNodeType": "DEFAULT",
     "strippingResult": {
       "value": ""
     },
@@ -116,14 +116,27 @@
       },
       {
         "value": "Blocks.PLANKS"
+      },
+      {
+        "value": "Blocks.COBBLED_DEEPSLATE"
+      },
+      {
+        "value": "Blocks.DEEPSLATE"
       }
     ],
     "isBonemealable": false,
-    "frequencyOnChunks": 5,
-    "generateFeature": false,
-    "restrictionBiomes": [],
-    "generationType": "Flower",
+    "frequencyOnChunks": 4,
+    "generateFeature": true,
+    "restrictionBiomes": [
+      {
+        "value": "CUSTOM:AshenBarrens"
+      }
+    ],
+    "generationType": "Grass",
     "patchSize": 64,
-    "generateAtAnyHeight": false
+    "generateAtAnyHeight": false,
+    "onRightClicked": {
+      "name": "AshRosePlantRightclicked"
+    }
   }
 }

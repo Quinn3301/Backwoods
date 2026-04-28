@@ -22,6 +22,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Mth;
 import net.minecraft.sounds.SoundSource;
@@ -279,6 +280,10 @@ public class RotOnEntityTickUpdateProcedure {
 					if (entity.level().clip(new ClipContext(entity.getEyePosition(1f), entity.getEyePosition(1f).add(entity.getViewVector(1f).scale(4)), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity)).getType() == HitResult.Type.BLOCK) {
 						if (entity instanceof RotEntity _datEntSetI)
 							_datEntSetI.getEntityData().set(RotEntity.DATA_mineProgress, (int) ((entity instanceof RotEntity _datEntI ? _datEntI.getEntityData().get(RotEntity.DATA_mineProgress) : 0) + 1));
+						if (entity.tickCount % 6 == 0) {
+							if (entity instanceof LivingEntity _entity)
+								_entity.swing(InteractionHand.MAIN_HAND, true);
+						}
 						if (entity instanceof RotEntity _datEntSetI)
 							_datEntSetI.getEntityData().set(RotEntity.DATA_mineX,
 									entity.level().clip(new ClipContext(entity.getEyePosition(1f), entity.getEyePosition(1f).add(entity.getViewVector(1f).scale(4)), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, entity)).getBlockPos().getX());
@@ -308,7 +313,7 @@ public class RotOnEntityTickUpdateProcedure {
 												.getDestroySpeed(world,
 														BlockPos.containing(entity instanceof RotEntity _datEntI ? _datEntI.getEntityData().get(RotEntity.DATA_mineX) : 0,
 																entity instanceof RotEntity _datEntI ? _datEntI.getEntityData().get(RotEntity.DATA_mineY) : 0,
-																entity instanceof RotEntity _datEntI ? _datEntI.getEntityData().get(RotEntity.DATA_mineZ) : 0)) < 50) {
+																entity instanceof RotEntity _datEntI ? _datEntI.getEntityData().get(RotEntity.DATA_mineZ) : 0)) < 60) {
 									world.destroyBlock(BlockPos.containing(entity instanceof RotEntity _datEntI ? _datEntI.getEntityData().get(RotEntity.DATA_mineX) : 0,
 											entity instanceof RotEntity _datEntI ? _datEntI.getEntityData().get(RotEntity.DATA_mineY) : 0, entity instanceof RotEntity _datEntI ? _datEntI.getEntityData().get(RotEntity.DATA_mineZ) : 0), false);
 									if (world instanceof Level _level)
@@ -328,6 +333,9 @@ public class RotOnEntityTickUpdateProcedure {
 							_datEntSetI.getEntityData().set(RotEntity.DATA_mineProgress, 0);
 					}
 				}
+			}
+			if (entity.isPassenger()) {
+				entity.stopRiding();
 			}
 		}
 	}

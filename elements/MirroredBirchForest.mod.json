@@ -25,13 +25,13 @@
       "falpha": 0.0
     },
     "ambientSound": {
-      "value": "CUSTOM:still_ambient"
-    },
-    "additionsSound": {
       "value": ""
     },
+    "additionsSound": {
+      "value": "CUSTOM:familiar_ambient_3"
+    },
     "music": {
-      "value": "CUSTOM:still_music2"
+      "value": ""
     },
     "moodSound": {
       "value": "CUSTOM:still_mood3"

@@ -167,7 +167,7 @@
     "immuneToWither": false,
     "immuneToDragonBreath": false,
     "mobDrop": {
-      "value": "CUSTOM:Seep"
+      "value": "CUSTOM:ResonantRotEffigy"
     },
     "livingSound": {
       "value": "CUSTOM:rot_idle"

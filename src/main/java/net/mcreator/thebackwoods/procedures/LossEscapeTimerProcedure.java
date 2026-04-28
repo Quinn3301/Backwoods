@@ -39,7 +39,7 @@ public class LossEscapeTimerProcedure {
 			return;
 		if ((entity.level().dimension()) == ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("the_backwoods:loss"))) {
 			entity.getPersistentData().putDouble("void_time", (entity.getPersistentData().getDouble("void_time") + 1));
-			if (entity.getPersistentData().getDouble("void_time") >= 7250) {
+			if (entity.getPersistentData().getDouble("void_time") >= 24000) {
 				if (entity instanceof ServerPlayer _player && !_player.level().isClientSide()) {
 					ResourceKey<Level> destinationType = ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("the_backwoods:the_grain"));
 					if (_player.level().dimension() == destinationType)
@@ -55,7 +55,7 @@ public class LossEscapeTimerProcedure {
 					}
 				}
 				entity.getPersistentData().putDouble("void_time", 0);
-				entity.getPersistentData().putDouble("backwoods_time", 5);
+				entity.getPersistentData().putDouble("backwoods_time", 0);
 			}
 			if (entity.getPersistentData().getDouble("debug_mode") == 1) {
 				if (entity instanceof Player _player && !_player.level().isClientSide())

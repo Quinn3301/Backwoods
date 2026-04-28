@@ -19,13 +19,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.BlockPos;
 
 import net.mcreator.thebackwoods.procedures.HollowOnEntityTickUpdateProcedure;
+import net.mcreator.thebackwoods.procedures.HollowNaturalEntitySpawningConditionProcedure;
 import net.mcreator.thebackwoods.procedures.HollowEntityIsHurtProcedure;
 import net.mcreator.thebackwoods.init.TheBackwoodsModEntities;
 
@@ -78,8 +78,6 @@ public class HollowEntity extends Monster {
 		Entity immediatesourceentity = damagesource.getDirectEntity();
 
 		HollowEntityIsHurtProcedure.execute(world, x, y, z, entity, sourceentity);
-		if (damagesource.is(DamageTypes.IN_FIRE))
-			return false;
 		if (damagesource.getDirectEntity() instanceof AbstractArrow)
 			return false;
 		if (damagesource.is(DamageTypes.DROWN))
@@ -101,9 +99,12 @@ public class HollowEntity extends Monster {
 	}
 
 	public static void init(RegisterSpawnPlacementsEvent event) {
-		event.register(TheBackwoodsModEntities.HOLLOW.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-				(entityType, world, reason, pos, random) -> (world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random) && Mob.checkMobSpawnRules(entityType, world, reason, pos, random)),
-				RegisterSpawnPlacementsEvent.Operation.REPLACE);
+		event.register(TheBackwoodsModEntities.HOLLOW.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> {
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			return HollowNaturalEntitySpawningConditionProcedure.execute(world, x, y, z);
+		}, RegisterSpawnPlacementsEvent.Operation.REPLACE);
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {

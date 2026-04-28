@@ -21,7 +21,7 @@ public class RottenPickaxeItem extends PickaxeItem {
 
 		@Override
 		public float getSpeed() {
-			return 6f;
+			return 2f;
 		}
 
 		@Override

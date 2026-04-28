@@ -23,6 +23,9 @@
       },
       {
         "value": "CUSTOM:MirroredOcean"
+      },
+      {
+        "value": "CUSTOM:MirroredTaiga"
       }
     ],
     "worldGenType": "Normal world gen",

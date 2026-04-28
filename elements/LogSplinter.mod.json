@@ -68,12 +68,12 @@
     "attackStrength": 6,
     "attackKnockback": 0.0,
     "knockbackResistance": 0.0,
-    "movementSpeed": 0.35,
+    "movementSpeed": 0.325,
     "stepHeight": 1.0,
-    "armorBaseValue": 0.0,
+    "armorBaseValue": 2.0,
     "trackingRange": 64,
     "followRange": 32,
-    "health": 30,
+    "health": 32,
     "xpAmount": 10,
     "waterMob": false,
     "breatheUnderwater": {
@@ -89,7 +89,7 @@
     "ridable": false,
     "canControlForward": false,
     "canControlStrafe": false,
-    "immuneToFire": true,
+    "immuneToFire": false,
     "immuneToArrows": true,
     "immuneToFallDamage": false,
     "immuneToCactus": true,
@@ -178,9 +178,6 @@
         "value": 0
       }
     ],
-    "whenMobDies": {
-      "name": "LogSplinterEntityDies"
-    },
     "onMobTickUpdate": {
       "name": "LogSplinterOnEntityTickUpdate"
     },

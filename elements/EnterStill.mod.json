@@ -15,7 +15,7 @@
     "rewardLoot": [],
     "rewardRecipes": [],
     "rewardXP": 0,
-    "achievementType": "task",
+    "achievementType": "goal",
     "parent": {
       "value": "CUSTOM:RotEffigyObtain"
     },

@@ -53,6 +53,12 @@
         "weight": 16,
         "minCount": 1,
         "maxCount": 4
+      },
+      {
+        "type": "the_backwoods:petrified_log_splinter",
+        "weight": 19,
+        "minCount": 4,
+        "maxCount": 4
       }
     ],
     "creature": [],

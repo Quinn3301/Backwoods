@@ -21,7 +21,7 @@ public class RottenHoeItem extends HoeItem {
 
 		@Override
 		public float getSpeed() {
-			return 2f;
+			return 1f;
 		}
 
 		@Override

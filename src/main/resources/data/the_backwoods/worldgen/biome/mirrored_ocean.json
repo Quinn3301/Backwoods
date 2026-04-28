@@ -28,14 +28,7 @@
     "ambient": [],
     "axolotls": [],
     "underground_water_creature": [],
-    "water_creature": [
-      {
-        "type": "salmon",
-        "weight": 1,
-        "minCount": 1,
-        "maxCount": 1
-      }
-    ],
+    "water_creature": [],
     "water_ambient": [],
     "misc": []
   },

@@ -42,8 +42,7 @@
     "name": "Rotten Oak Planks",
     "specialInformation": {
       "fixedValue": [
-        "§8Tainted wood. It drains your life.",
-        "§8Something hollow hides beneath it."
+        "§8Tainted wood. It drains your life."
       ]
     },
     "hardness": 3.0,
@@ -89,7 +88,7 @@
     "strippingResult": {
       "value": ""
     },
-    "ignitedByLava": false,
+    "ignitedByLava": true,
     "flammability": 0,
     "fireSpreadSpeed": 0,
     "isLadder": false,

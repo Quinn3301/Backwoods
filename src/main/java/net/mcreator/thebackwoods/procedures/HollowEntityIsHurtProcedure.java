@@ -21,7 +21,9 @@ public class HollowEntityIsHurtProcedure {
 			return;
 		if (entity instanceof HollowEntity) {
 			if (world instanceof ServerLevel _level)
-				_level.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, 20, 0.5, 2, 0.5, 0.1);
+				_level.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, (y + 1), z, 50, 0.5, 0.5, 0.5, 0.01);
+			if (!entity.level().isClientSide())
+				entity.discard();
 			if (Math.random() < (1) / ((float) 3)) {
 				if (sourceentity instanceof LivingEntity _entity && !_entity.level().isClientSide())
 					_entity.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 150, 6, false, false));
@@ -33,8 +35,6 @@ public class HollowEntityIsHurtProcedure {
 					}
 				}
 			}
-			if (!entity.level().isClientSide())
-				entity.discard();
 		}
 	}
 }

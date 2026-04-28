@@ -11,7 +11,11 @@
     "animations": [],
     "name": "Heartwood Shard",
     "rarity": "RARE",
-    "creativeTabs": [],
+    "creativeTabs": [
+      {
+        "value": "MATERIALS"
+      }
+    ],
     "stackSize": 64,
     "enchantability": 0,
     "useDuration": 0,

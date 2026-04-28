@@ -37,23 +37,23 @@
       "falpha": 0.0
     },
     "ambientSound": {
-      "value": ""
+      "value": "ambient.soul_sand_valley.loop"
     },
     "additionsSound": {
       "value": ""
     },
     "music": {
-      "value": ""
+      "value": "ambient.crimson_forest.loop"
     },
     "moodSound": {
       "value": ""
     },
     "moodSoundDelay": 6000,
-    "spawnParticles": false,
+    "spawnParticles": true,
     "particleToSpawn": {
       "value": "ASH"
     },
-    "particlesProbability": 0.5,
+    "particlesProbability": 0.1,
     "rainingPossibility": 0.0,
     "temperature": 0.35,
     "spawnBiome": false,

@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "the_backwoods:splinter_nest",
+  "spawners": {
+    "type": "the_backwoods:blindspot_splinter",
+    "weight": 1,
+    "minCount": 1,
+    "maxCount": 17
+  }
+}

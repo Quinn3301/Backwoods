@@ -30,7 +30,7 @@ import java.util.List;
 public class GrainTorchFadeProcedure {
 
 	// ---------- TUNABLE ----------
-	private static final int CHECK_INTERVAL_TICKS = 10;
+	private static final int CHECK_INTERVAL_TICKS = 15;
 	private static final double DISAPPEAR_CHANCE = 0.06;
 	private static final double WATCH_DOT_THRESHOLD = 0.70;
 	private static final int MAX_TRACKED_TORCHES = 256;

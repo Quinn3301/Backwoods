@@ -10,7 +10,7 @@
     "textureBack": "faded",
     "renderType": 10,
     "customModelName": "Normal",
-    "rotationMode": 1,
+    "rotationMode": 0,
     "enablePitch": false,
     "emissiveRendering": false,
     "displayFluidOverlay": false,
@@ -43,13 +43,13 @@
     "specialInformation": {
       "fixedValue": []
     },
-    "hardness": 2.0,
-    "resistance": 10.0,
+    "hardness": 0.35,
+    "resistance": 0.8,
     "hasGravity": false,
     "isWaterloggable": false,
     "hasBlockItem": true,
     "maxStackSize": 64,
-    "rarity": "UNCOMMON",
+    "rarity": "COMMON",
     "immuneToFire": false,
     "creativeTabs": [
       {
@@ -69,7 +69,7 @@
     "useLootTableForDrops": false,
     "requiresCorrectTool": false,
     "enchantPowerBonus": 0.0,
-    "plantsGrowOn": true,
+    "plantsGrowOn": false,
     "canRedstoneConnect": false,
     "lightOpacity": 14,
     "tickRate": 0,

@@ -19,11 +19,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.FriendlyByteBuf;
 
 import net.mcreator.thebackwoods.network.TheBackwoodsModVariables;
-import net.mcreator.thebackwoods.init.TheBackwoodsModTabs;
-import net.mcreator.thebackwoods.init.TheBackwoodsModSounds;
-import net.mcreator.thebackwoods.init.TheBackwoodsModItems;
-import net.mcreator.thebackwoods.init.TheBackwoodsModEntities;
-import net.mcreator.thebackwoods.init.TheBackwoodsModBlocks;
+import net.mcreator.thebackwoods.init.*;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.Map;
@@ -48,6 +44,7 @@ public class TheBackwoodsMod {
 		TheBackwoodsModEntities.REGISTRY.register(modEventBus);
 		TheBackwoodsModTabs.REGISTRY.register(modEventBus);
 		TheBackwoodsModVariables.ATTACHMENT_TYPES.register(modEventBus);
+		TheBackwoodsModMobEffects.REGISTRY.register(modEventBus);
 		// Start of user code block mod init
 		// End of user code block mod init
 	}

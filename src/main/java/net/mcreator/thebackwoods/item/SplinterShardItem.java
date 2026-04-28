@@ -11,7 +11,7 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 
 public class SplinterShardItem extends Item {
 	public SplinterShardItem() {
-		super(new Item.Properties().durability(90).rarity(Rarity.UNCOMMON)
+		super(new Item.Properties().durability(25).rarity(Rarity.UNCOMMON)
 				.attributes(ItemAttributeModifiers.builder().add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, -0.33, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
 						.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, -2.4, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build()));
 	}

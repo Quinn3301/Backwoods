@@ -5,6 +5,7 @@ import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.common.NeoForgeMod;
 
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -36,6 +37,8 @@ import net.minecraft.core.BlockPos;
 
 import net.mcreator.thebackwoods.procedures.SplinterOnInitialEntitySpawnProcedure;
 import net.mcreator.thebackwoods.procedures.BlindspotSplinterOnEntityTickUpdateProcedure;
+import net.mcreator.thebackwoods.procedures.BlindspotSplinterNaturalEntitySpawningConditionProcedure;
+import net.mcreator.thebackwoods.init.TheBackwoodsModEntities;
 
 import javax.annotation.Nullable;
 
@@ -73,7 +76,7 @@ public class BlindspotSplinterEntity extends Monster {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
-		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.32, true) {
+		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.325, true) {
 			@Override
 			protected boolean canPerformAttack(LivingEntity entity) {
 				return this.isTimeToAttack() && this.mob.distanceToSqr(entity) < (this.mob.getBbWidth() * this.mob.getBbWidth() + entity.getBbWidth()) && this.mob.getSensing().hasLineOfSight(entity);
@@ -201,11 +204,17 @@ public class BlindspotSplinterEntity extends Monster {
 	}
 
 	public static void init(RegisterSpawnPlacementsEvent event) {
+		event.register(TheBackwoodsModEntities.BLINDSPOT_SPLINTER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, world, reason, pos, random) -> {
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			return BlindspotSplinterNaturalEntitySpawningConditionProcedure.execute();
+		}, RegisterSpawnPlacementsEvent.Operation.REPLACE);
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
 		AttributeSupplier.Builder builder = Mob.createMobAttributes();
-		builder = builder.add(Attributes.MOVEMENT_SPEED, 0.35);
+		builder = builder.add(Attributes.MOVEMENT_SPEED, 0.335);
 		builder = builder.add(Attributes.MAX_HEALTH, 30);
 		builder = builder.add(Attributes.ARMOR, 0);
 		builder = builder.add(Attributes.ATTACK_DAMAGE, 6);

@@ -36,7 +36,7 @@ public class GrainEntryProcedure {
     private static final int INITIAL_DELAY_TICKS = 40;
     private static final int REAPPLY_INTERVAL_TICKS = 100;
     private static final int TELEPORT_ON_APPLICATION = 4;
-    private static final int TELEPORT_DELAY_TICKS = 78; // Set to your preferred 78 ticks
+    private static final int TELEPORT_DELAY_TICKS = 78;
     private static final double SPLINTER_DETECT_RADIUS = 32.0;
     private static final int BLINDNESS_DURATION_TICKS = 40;
     private static final int BLINDNESS_AMPLIFIER = 1;

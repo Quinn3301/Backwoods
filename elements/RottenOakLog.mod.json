@@ -10,7 +10,7 @@
     "textureBack": "rotting_oak_log",
     "renderType": 10,
     "customModelName": "Normal",
-    "rotationMode": 0,
+    "rotationMode": 5,
     "enablePitch": false,
     "emissiveRendering": false,
     "displayFluidOverlay": false,
@@ -88,8 +88,8 @@
     "strippingResult": {
       "value": ""
     },
-    "ignitedByLava": false,
-    "flammability": 0,
+    "ignitedByLava": true,
+    "flammability": 5,
     "fireSpreadSpeed": 0,
     "isLadder": false,
     "slipperiness": 0.8,

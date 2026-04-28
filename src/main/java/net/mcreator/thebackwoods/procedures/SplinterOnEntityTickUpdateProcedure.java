@@ -1,6 +1,8 @@
 package net.mcreator.thebackwoods.procedures;
 
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.mcreator.thebackwoods.entity.SplinterEntity;
+import net.mcreator.thebackwoods.init.TheBackwoodsModBlocks;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.bus.api.Event;
@@ -21,6 +23,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.util.Mth;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.server.level.ServerLevel;
@@ -33,270 +37,309 @@ import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.CommandSource;
 
-import net.mcreator.thebackwoods.init.TheBackwoodsModBlocks;
-import net.mcreator.thebackwoods.entity.SplinterEntity;
-
 import javax.annotation.Nullable;
-
 import java.util.Comparator;
 
 @EventBusSubscriber
 public class SplinterOnEntityTickUpdateProcedure {
 
-	private static final double WATCH_DOT_THRESHOLD = 0.5;
-	private static final double ACTIVE_MOVE_SPEED = 0.325;
-	private static final float MINE_SPEED_MULTIPLIER = 50f;
-	private static final float MINE_SPEED_BASE = 50f;
-	private static final float MAX_BREAKABLE_HARDNESS = 50f;
-	private static final double TARGET_RANGE = 56;
-	private static final double SPLINTER_SCAN_RADIUS = 28;
-	private static final double MINE_RAY_DISTANCE = 2.0;
-	private static final double ROSE_WILT_TICKS = 450;
-	private static final int ROSE_SCAN_XZ = 6;
-	private static final int ROSE_SCAN_Y = 3;
+    private static final double WATCH_DOT_THRESHOLD = 0.5;
+    private static final double ACTIVE_MOVE_SPEED = 0.335;
+    private static final float MINE_SPEED_MULTIPLIER = 50f;
+    private static final float MINE_SPEED_BASE = 50f;
+    private static final float MAX_BREAKABLE_HARDNESS = 50f;
+    private static final double TARGET_RANGE = 56;
+    private static final double SPLINTER_SCAN_RADIUS = 28;
+    private static final double MINE_RAY_DISTANCE = 2.0;
+    private static final double ROSE_WILT_TICKS = 450;
+    private static final int ROSE_SCAN_XZ = 6;
+    private static final int ROSE_SCAN_Y = 3;
+    private static final int RAGE_WATCH_THRESHOLD = 600;
+    private static final double RAGE_ESCAPE_RANGE = 14.0;
 
-	// How many ticks the player must stare before rage triggers
-	private static final int RAGE_WATCH_THRESHOLD = 300;
+    // Swim tuning
+    private static final double SWIM_SPEED = 0.22;
+    private static final double SWIM_VERTICAL_SPEED = 0.12;
+    private static final double SWIM_DRAG = 0.72;
+    private static final double SWIM_COLLISION_LIFT = 0.12;
 
-	// Splinter must be within this range to calm down from rage
-	private static final double RAGE_ESCAPE_RANGE = 14.0;
+    @SubscribeEvent
+    public static void onEntityTick(EntityTickEvent.Pre event) {
+        execute(event, event.getEntity().level(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), event.getEntity());
+    }
 
-	@SubscribeEvent
-	public static void onEntityTick(EntityTickEvent.Pre event) {
-		execute(event, event.getEntity().level(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), event.getEntity());
-	}
+    public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
+        execute(null, world, x, y, z, entity);
+    }
 
-	public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
-		execute(null, world, x, y, z, entity);
-	}
+    private static void execute(@Nullable Event event, LevelAccessor world, double x, double y, double z, Entity entity) {
+        if (entity == null || !(entity instanceof SplinterEntity))
+            return;
 
-	private static void execute(@Nullable Event event, LevelAccessor world, double x, double y, double z, Entity entity) {
-		if (entity == null)
-			return;
-		if (!(entity instanceof SplinterEntity))
-			return;
+        if (entity.isPassenger()) {
+            Entity vehicle = entity.getVehicle();
+            if (vehicle instanceof net.minecraft.world.entity.vehicle.Boat || vehicle instanceof net.minecraft.world.entity.vehicle.ChestBoat) {
+                entity.stopRiding();
+                entity.setDeltaMovement(entity.getDeltaMovement().add(0, 0.2, 0));
+            }
+        }
 
-		final Vec3 center = new Vec3(x, y, z);
+        final Vec3 center = new Vec3(x, y, z);
 
-		for (SplinterEntity splinter : world.getEntitiesOfClass(SplinterEntity.class, new AABB(center, center).inflate(SPLINTER_SCAN_RADIUS), e -> true)
-				.stream().sorted(Comparator.comparingDouble(e -> e.distanceToSqr(center))).toList()) {
+        for (SplinterEntity splinter : world.getEntitiesOfClass(SplinterEntity.class, new AABB(center, center).inflate(SPLINTER_SCAN_RADIUS), e -> true)
+                .stream().sorted(Comparator.comparingDouble(e -> e.distanceToSqr(center))).toList()) {
 
-			Player foundPlayer = (Player) findEntityInWorldRange(world, Player.class, splinter.getX(), splinter.getY(), splinter.getZ(), TARGET_RANGE);
-			if (foundPlayer == null) {
-				// No player in range, calm down if enraged
-				splinter.getEntityData().set(SplinterEntity.DATA_watchTimer, 0);
-				splinter.getEntityData().set(SplinterEntity.DATA_isEnraged, 0);
-				continue;
-			}
+            Player foundPlayer = (Player) findEntityInWorldRange(world, Player.class, splinter.getX(), splinter.getY(), splinter.getZ(), TARGET_RANGE);
+            if (foundPlayer == null) {
+                splinter.getEntityData().set(SplinterEntity.DATA_watchTimer, 0);
+                splinter.getEntityData().set(SplinterEntity.DATA_isEnraged, 0);
+                splinter.setSwimming(false);
+                splinter.setPose(Pose.STANDING);
+                continue;
+            }
 
-			int frozenByRose = splinter.getEntityData().get(SplinterEntity.DATA_frozenByRose);
-			int isEnraged = splinter.getEntityData().get(SplinterEntity.DATA_isEnraged);
-			int watchTimer = splinter.getEntityData().get(SplinterEntity.DATA_watchTimer);
+            int frozenByRose = splinter.getEntityData().get(SplinterEntity.DATA_frozenByRose);
+            int isEnraged = splinter.getEntityData().get(SplinterEntity.DATA_isEnraged);
+            int watchTimer = splinter.getEntityData().get(SplinterEntity.DATA_watchTimer);
 
-			Vec3 toSplinter = splinter.getEyePosition().subtract(foundPlayer.getEyePosition()).normalize();
-			double dot = foundPlayer.getLookAngle().normalize().dot(toSplinter);
-			boolean facing = dot > WATCH_DOT_THRESHOLD;
-			boolean canSee = foundPlayer.hasLineOfSight(splinter);
-			boolean isWatched = facing && canSee;
+            Vec3 toSplinter = splinter.getEyePosition().subtract(foundPlayer.getEyePosition()).normalize();
+            double dot = foundPlayer.getLookAngle().normalize().dot(toSplinter);
+            boolean facing = dot > WATCH_DOT_THRESHOLD;
+            boolean canSee = foundPlayer.hasLineOfSight(splinter);
+            boolean isWatched = facing && canSee;
 
-			// Check if player has escaped range to calm rage
-			double distToPlayer = splinter.position().distanceTo(foundPlayer.position());
-			if (isEnraged == 1 && distToPlayer > RAGE_ESCAPE_RANGE) {
-				splinter.getEntityData().set(SplinterEntity.DATA_isEnraged, 0);
-				splinter.getEntityData().set(SplinterEntity.DATA_watchTimer, 0);
-				isEnraged = 0;
-			}
+            double distToPlayer = splinter.position().distanceTo(foundPlayer.position());
+            if (isEnraged == 1 && distToPlayer > RAGE_ESCAPE_RANGE) {
+                splinter.getEntityData().set(SplinterEntity.DATA_isEnraged, 0);
+                splinter.getEntityData().set(SplinterEntity.DATA_watchTimer, 0);
+                isEnraged = 0;
+            }
 
-			// Increment or reset watch timer
-			if (isWatched && isEnraged == 0) {
-				watchTimer++;
-				splinter.getEntityData().set(SplinterEntity.DATA_watchTimer, watchTimer);
-				if (watchTimer >= RAGE_WATCH_THRESHOLD) {
-					splinter.getEntityData().set(SplinterEntity.DATA_isEnraged, 1);
-					splinter.getEntityData().set(SplinterEntity.DATA_watchTimer, 0);
-					isEnraged = 1;
-				}
-			} else if (!isWatched && isEnraged == 0) {
-				splinter.getEntityData().set(SplinterEntity.DATA_watchTimer, 0);
-			}
+            if (isWatched && isEnraged == 0) {
+                watchTimer++;
+                splinter.getEntityData().set(SplinterEntity.DATA_watchTimer, watchTimer);
+                if (watchTimer >= RAGE_WATCH_THRESHOLD) {
+                    splinter.getEntityData().set(SplinterEntity.DATA_isEnraged, 1);
+                    splinter.getEntityData().set(SplinterEntity.DATA_watchTimer, 0);
+                    isEnraged = 1;
+                }
+            } else if (!isWatched && isEnraged == 0) {
+                splinter.getEntityData().set(SplinterEntity.DATA_watchTimer, 0);
+            }
 
-			// Freeze logic - enraged splinter ignores gaze
-			if ((isWatched && isEnraged == 0) || frozenByRose == 1) {
-				setSpeed(splinter, 0);
-				if (splinter instanceof Mob mob) {
-					mob.getNavigation().stop();
-				}
-				continue;
-			}
+            if ((isWatched && isEnraged == 0) || frozenByRose == 1) {
+                setSpeed(splinter, 0);
+                splinter.setSwimming(false);
+                splinter.setPose(Pose.STANDING);
+                if (splinter instanceof Mob mob) {
+                    mob.getNavigation().stop();
+                }
+                continue;
+            }
 
-			// Movement
-			splinter.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(foundPlayer.getX(), foundPlayer.getEyeY(), foundPlayer.getZ()));
-			setSpeed(splinter, ACTIVE_MOVE_SPEED);
+            // Swimming branch
+            if (handleSwimmingMovement(splinter, foundPlayer)) {
+                setSpeed(splinter, ACTIVE_MOVE_SPEED);
+                continue; // don't do mining/bridging while swimming
+            }
 
-			Vec3 splinterEyes = splinter.getEyePosition(1f);
-			Vec3 splinterView = splinter.getViewVector(1f);
-			Vec3 blockCheckTarget = splinterEyes.add(splinterView.scale(MINE_RAY_DISTANCE));
+            splinter.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(foundPlayer.getX(), foundPlayer.getEyeY(), foundPlayer.getZ()));
+            setSpeed(splinter, ACTIVE_MOVE_SPEED);
 
-			HitResult hit = world.clip(new ClipContext(splinterEyes, blockCheckTarget, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, splinter));
+            Vec3 splinterEyes = splinter.getEyePosition(1f);
+            Vec3 splinterView = splinter.getViewVector(1f);
+            Vec3 blockCheckTarget = splinterEyes.add(splinterView.scale(MINE_RAY_DISTANCE));
 
-			if (hit.getType() == HitResult.Type.BLOCK) {
-				BlockPos facePos = ((BlockHitResult) hit).getBlockPos();
-				BlockPos feetPos = new BlockPos(facePos.getX(), Mth.floor(splinter.getY()), facePos.getZ());
+            HitResult hit = world.clip(new ClipContext(splinterEyes, blockCheckTarget, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, splinter));
 
-				boolean canMineFeet = canMine(world, feetPos, foundPlayer);
-				boolean canMineFace = canMine(world, facePos, foundPlayer);
+            if (hit.getType() == HitResult.Type.BLOCK) {
+                BlockPos facePos = ((BlockHitResult) hit).getBlockPos();
+                BlockPos feetPos = new BlockPos(facePos.getX(), Mth.floor(splinter.getY()), facePos.getZ());
 
-				if (canMineFeet || canMineFace) {
-					int mineProgress = splinter.getEntityData().get(SplinterEntity.DATA_mineProgress) + 1;
-					splinter.getEntityData().set(SplinterEntity.DATA_mineProgress, mineProgress);
+                boolean canMineFeet = canMine(world, feetPos, foundPlayer);
+                boolean canMineFace = canMine(world, facePos, foundPlayer);
 
-					BlockPos trackPos = canMineFeet ? feetPos : facePos;
-					splinter.getEntityData().set(SplinterEntity.DATA_mineX, trackPos.getX());
-					splinter.getEntityData().set(SplinterEntity.DATA_mineY, trackPos.getY());
-					splinter.getEntityData().set(SplinterEntity.DATA_mineZ, trackPos.getZ());
+                if (canMineFeet || canMineFace) {
+                    int mineProgress = splinter.getEntityData().get(SplinterEntity.DATA_mineProgress) + 1;
+                    splinter.getEntityData().set(SplinterEntity.DATA_mineProgress, mineProgress);
 
-					float speedRef = canMineFeet ? world.getBlockState(feetPos).getDestroySpeed(world, feetPos) : world.getBlockState(facePos).getDestroySpeed(world, facePos);
-					float mineThreshold = speedRef * MINE_SPEED_MULTIPLIER + MINE_SPEED_BASE;
+                    if (splinter.tickCount % 6 == 0) {
+                        splinter.swing(InteractionHand.MAIN_HAND);
+                    }
 
-					if (mineProgress > mineThreshold) {
-						if (canMineFeet) {
-							world.destroyBlock(feetPos, false);
-							if (world instanceof Level level) {
-								level.updateNeighborsAt(feetPos, level.getBlockState(feetPos).getBlock());
-							}
-						}
-						if (canMineFace) {
-							world.destroyBlock(facePos, false);
-							if (world instanceof Level level) {
-								level.updateNeighborsAt(facePos, level.getBlockState(facePos).getBlock());
-							}
-						}
-						if (splinter instanceof Mob mob) {
-							mob.getNavigation().stop();
-						}
-						splinter.getEntityData().set(SplinterEntity.DATA_mineProgress, 0);
-					}
-				} else {
-					splinter.getEntityData().set(SplinterEntity.DATA_mineProgress, 0);
-				}
-			} else {
-				splinter.getEntityData().set(SplinterEntity.DATA_mineProgress, 0);
+                    BlockPos trackPos = canMineFeet ? feetPos : facePos;
+                    splinter.getEntityData().set(SplinterEntity.DATA_mineX, trackPos.getX());
+                    splinter.getEntityData().set(SplinterEntity.DATA_mineY, trackPos.getY());
+                    splinter.getEntityData().set(SplinterEntity.DATA_mineZ, trackPos.getZ());
 
-				double heightDiff = foundPlayer.getY() - splinter.getY();
-				double horizontalDist = splinter.position().distanceTo(foundPlayer.position());
+                    float speedRef = canMineFeet ? world.getBlockState(feetPos).getDestroySpeed(world, feetPos) : world.getBlockState(facePos).getDestroySpeed(world, facePos);
+                    float mineThreshold = speedRef * MINE_SPEED_MULTIPLIER + MINE_SPEED_BASE;
 
-				if (heightDiff >= 1.4 && horizontalDist < 12) {
-					if (world instanceof ServerLevel serverLevel) {
-						CommandSourceStack src = new CommandSourceStack(CommandSource.NULL, new Vec3(splinter.getX(), splinter.getY(), splinter.getZ()), Vec2.ZERO, serverLevel, 4, "", Component.literal(""), serverLevel.getServer(), null).withSuppressedOutput();
-						serverLevel.getServer().getCommands().performPrefixedCommand(src, "fill ~ ~-1 ~ ~ ~-1 ~ minecraft:oak_planks replace minecraft:air");
-						serverLevel.getServer().getCommands().performPrefixedCommand(src, "fill ~ ~ ~ ~ ~1 ~ minecraft:air replace minecraft:oak_planks");
-					}
-					world.destroyBlock(BlockPos.containing(splinter.getX(), splinter.getY() + 2, splinter.getZ()), false);
-					world.destroyBlock(BlockPos.containing(splinter.getX(), splinter.getY() + 3, splinter.getZ()), false);
-					if (splinter.onGround()) {
-						splinter.setDeltaMovement(new Vec3(splinter.getDeltaMovement().x(), 0.4, splinter.getDeltaMovement().z()));
-					}
-					splinter.fallDistance = 0;
-				} else if (heightDiff > -0.5 && heightDiff < 2.5) {
-					Vec3 look = splinter.getLookAngle();
-					BlockPos bridgePos = BlockPos.containing(splinter.getX() + look.x, splinter.getY() - 1, splinter.getZ() + look.z);
-					if (!(world.getBlockFloorHeight(bridgePos) > 0)) {
-						world.setBlock(bridgePos, Blocks.OAK_PLANKS.defaultBlockState(), 3);
-					}
-				}
-			}
+                    if (mineProgress > mineThreshold) {
+                        if (canMineFeet) world.destroyBlock(feetPos, false);
+                        if (canMineFace) world.destroyBlock(facePos, false);
+                        if (splinter instanceof Mob mob) {
+                            mob.getNavigation().stop();
+                        }
+                        splinter.getEntityData().set(SplinterEntity.DATA_mineProgress, 0);
+                    }
+                } else {
+                    splinter.getEntityData().set(SplinterEntity.DATA_mineProgress, 0);
+                }
+            } else {
+                splinter.getEntityData().set(SplinterEntity.DATA_mineProgress, 0);
 
-			boolean foundRose = checkHeldRose(foundPlayer, splinter, world, foundPlayer.getX(), foundPlayer.getY(), foundPlayer.getZ());
+                double heightDiff = foundPlayer.getY() - splinter.getY();
+                double horizontalDist = splinter.position().distanceTo(foundPlayer.position());
 
-			if (!foundRose && splinter.tickCount % 5 == 0) {
-				foundRose = checkNearbyRoseBlocks(world, splinter);
-			}
+                if (heightDiff >= 1.4 && horizontalDist < 12) {
+                    if (world instanceof ServerLevel serverLevel) {
+                        CommandSourceStack src = new CommandSourceStack(CommandSource.NULL, new Vec3(splinter.getX(), splinter.getY(), splinter.getZ()), Vec2.ZERO, serverLevel, 4, "", Component.literal(""), serverLevel.getServer(), null).withSuppressedOutput();
+                        serverLevel.getServer().getCommands().performPrefixedCommand(src, "fill ~ ~-1 ~ ~ ~-1 ~ minecraft:oak_planks replace minecraft:air");
+                        serverLevel.getServer().getCommands().performPrefixedCommand(src, "fill ~ ~ ~ ~ ~1 ~ minecraft:air replace minecraft:oak_planks");
+                    }
+                    world.destroyBlock(BlockPos.containing(splinter.getX(), splinter.getY() + 2, splinter.getZ()), false);
+                    world.destroyBlock(BlockPos.containing(splinter.getX(), splinter.getY() + 3, splinter.getZ()), false);
 
-			if (foundRose) {
-				setSpeed(splinter, 0);
-				splinter.getEntityData().set(SplinterEntity.DATA_isEnraged, 0);
-				splinter.getEntityData().set(SplinterEntity.DATA_watchTimer, 0);
-				if (splinter instanceof Mob mob) {
-					mob.getNavigation().stop();
-				}
-			}
-		}
-	}
+                    if (splinter.onGround()) {
+                        splinter.setDeltaMovement(new Vec3(splinter.getDeltaMovement().x(), 0.4, splinter.getDeltaMovement().z()));
+                    }
+                    splinter.fallDistance = 0;
+                } else if (heightDiff > -0.5 && heightDiff < 2.5) {
+                    Vec3 look = splinter.getLookAngle();
+                    BlockPos bridgePos = BlockPos.containing(splinter.getX() + look.x, splinter.getY() - 1, splinter.getZ() + look.z);
+                    if (!(world.getBlockFloorHeight(bridgePos) > 0)) {
+                        world.setBlock(bridgePos, Blocks.OAK_PLANKS.defaultBlockState(), 3);
+                    }
+                }
+            }
 
-	private static void setSpeed(LivingEntity entity, double speed) {
-		if (entity.getAttributes().hasAttribute(Attributes.MOVEMENT_SPEED)) {
-			entity.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(speed);
-		}
-	}
+            boolean foundRose = checkHeldRose(foundPlayer, splinter, world, foundPlayer.getX(), foundPlayer.getY(), foundPlayer.getZ());
+            if (!foundRose && splinter.tickCount % 5 == 0) {
+                foundRose = checkNearbyRoseBlocks(world, splinter);
+            }
 
-	private static boolean canMine(LevelAccessor world, BlockPos pos, Player player) {
-		float speed = world.getBlockState(pos).getDestroySpeed(world, pos);
-		if (speed < 0 || speed >= MAX_BREAKABLE_HARDNESS)
-			return false;
-		if (pos.getY() == (int) (player.getY() - 2))
-			return false;
-		return !world.getBlockState(pos).isAir();
-	}
+            if (foundRose) {
+                setSpeed(splinter, 0);
+                splinter.getEntityData().set(SplinterEntity.DATA_isEnraged, 0);
+                splinter.getEntityData().set(SplinterEntity.DATA_watchTimer, 0);
+                splinter.setSwimming(false);
+                splinter.setPose(Pose.STANDING);
+                if (splinter instanceof Mob mob) {
+                    mob.getNavigation().stop();
+                }
+            }
+        }
+    }
 
-	private static boolean checkHeldRose(Entity holder, SplinterEntity splinter, LevelAccessor world, double x, double y, double z) {
-		if (!(holder instanceof LivingEntity living))
-			return false;
+    private static boolean handleSwimmingMovement(SplinterEntity splinter, Player target) {
+        if (!splinter.isInWaterOrBubble()) {
+            splinter.setSwimming(false);
+            splinter.setPose(Pose.STANDING);
+            return false;
+        }
 
-		ItemStack main = living.getMainHandItem();
-		ItemStack off = living.getOffhandItem();
+        splinter.setSwimming(true);
+        splinter.setPose(Pose.SWIMMING);
 
-		boolean mainIsRose = main.getItem() == TheBackwoodsModBlocks.ASH_ROSE.get().asItem();
-		boolean offIsRose = off.getItem() == TheBackwoodsModBlocks.ASH_ROSE.get().asItem();
+        if (splinter instanceof Mob mob) {
+            mob.getNavigation().stop();
+        }
 
-		if (!mainIsRose && !offIsRose)
-			return false;
+        splinter.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(target.getX(), target.getEyeY(), target.getZ()));
 
-		setSpeed(splinter, 0);
-		if (splinter instanceof Mob mob) {
-			mob.getNavigation().stop();
-		}
+        Vec3 toTarget = new Vec3(
+                target.getX() - splinter.getX(),
+                target.getEyeY() - splinter.getEyeY(),
+                target.getZ() - splinter.getZ()
+        );
 
-		if (mainIsRose)
-			tickRoseItem(main, world, x, y, z);
-		if (offIsRose)
-			tickRoseItem(off, world, x, y, z);
+        if (toTarget.lengthSqr() < 1.0E-6) {
+            return true;
+        }
 
-		return true;
-	}
+        Vec3 dir = toTarget.normalize();
+        Vec3 motion = splinter.getDeltaMovement();
 
-	private static void tickRoseItem(ItemStack rose, LevelAccessor world, double x, double y, double z) {
-		double wiltTimer = rose.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getDouble("wilt_timer") + 1;
-		CustomData.update(DataComponents.CUSTOM_DATA, rose, tag -> tag.putDouble("wilt_timer", wiltTimer));
+        double nextX = motion.x * SWIM_DRAG + dir.x * SWIM_SPEED;
+        double nextY = motion.y * SWIM_DRAG + Mth.clamp(dir.y * SWIM_VERTICAL_SPEED, -SWIM_VERTICAL_SPEED, SWIM_VERTICAL_SPEED);
+        double nextZ = motion.z * SWIM_DRAG + dir.z * SWIM_SPEED;
 
-		if (wiltTimer > ROSE_WILT_TICKS) {
-			if (world instanceof Level level) {
-				if (!level.isClientSide()) {
-					level.playSound(null, BlockPos.containing(x, y, z), BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.fire.extinguish")), SoundSource.NEUTRAL, 1, 1);
-				} else {
-					level.playLocalSound(x, y, z, BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.fire.extinguish")), SoundSource.NEUTRAL, 1, 1, false);
-				}
-			}
-			rose.shrink(1);
-			CustomData.update(DataComponents.CUSTOM_DATA, rose, tag -> tag.putDouble("wilt_timer", 0));
-		}
-	}
+        if (splinter.horizontalCollision) {
+            nextY = Math.max(nextY, SWIM_COLLISION_LIFT);
+        }
 
-	private static boolean checkNearbyRoseBlocks(LevelAccessor world, SplinterEntity splinter) {
-		for (int sx = -ROSE_SCAN_XZ; sx < ROSE_SCAN_XZ; sx++) {
-			for (int sy = -ROSE_SCAN_Y; sy < ROSE_SCAN_Y; sy++) {
-				for (int sz = -ROSE_SCAN_XZ; sz < ROSE_SCAN_XZ; sz++) {
-					BlockPos check = BlockPos.containing(splinter.getX() + sx, splinter.getY() + sy, splinter.getZ() + sz);
-					if (world.getBlockState(check).getBlock() == TheBackwoodsModBlocks.ASH_ROSE.get()) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
+        splinter.setDeltaMovement(nextX, nextY, nextZ);
+        splinter.hasImpulse = true;
+        return true;
+    }
 
-	private static Entity findEntityInWorldRange(LevelAccessor world, Class<? extends Entity> clazz, double x, double y, double z, double range) {
-		return world.getEntitiesOfClass(clazz, AABB.ofSize(new Vec3(x, y, z), range, range, range), e -> true)
-				.stream().sorted(Comparator.comparingDouble(e -> e.distanceToSqr(x, y, z))).findFirst().orElse(null);
-	}
+    private static void setSpeed(LivingEntity entity, double speed) {
+        if (entity.getAttributes().hasAttribute(Attributes.MOVEMENT_SPEED)) {
+            entity.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(speed);
+        }
+    }
+
+    private static boolean canMine(LevelAccessor world, BlockPos pos, Player player) {
+        float speed = world.getBlockState(pos).getDestroySpeed(world, pos);
+        if (speed < 0 || speed >= MAX_BREAKABLE_HARDNESS) return false;
+        if (pos.getY() == (int) (player.getY() - 2)) return false;
+        return !world.getBlockState(pos).isAir();
+    }
+
+    private static boolean checkHeldRose(Entity holder, SplinterEntity splinter, LevelAccessor world, double x, double y, double z) {
+        if (!(holder instanceof LivingEntity living)) return false;
+
+        ItemStack main = living.getMainHandItem();
+        ItemStack off = living.getOffhandItem();
+
+        boolean mainIsRose = main.getItem() == TheBackwoodsModBlocks.ASH_ROSE.get().asItem();
+        boolean offIsRose = off.getItem() == TheBackwoodsModBlocks.ASH_ROSE.get().asItem();
+
+        if (!mainIsRose && !offIsRose) return false;
+
+        setSpeed(splinter, 0);
+        splinter.setSwimming(false);
+        splinter.setPose(Pose.STANDING);
+        if (splinter instanceof Mob mob) {
+            mob.getNavigation().stop();
+        }
+
+        if (mainIsRose) tickRoseItem(main, world, x, y, z);
+        if (offIsRose) tickRoseItem(off, world, x, y, z);
+
+        return true;
+    }
+
+    private static void tickRoseItem(ItemStack rose, LevelAccessor world, double x, double y, double z) {
+        double wiltTimer = rose.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getDouble("wilt_timer") + 1;
+        CustomData.update(DataComponents.CUSTOM_DATA, rose, tag -> tag.putDouble("wilt_timer", wiltTimer));
+
+        if (wiltTimer > ROSE_WILT_TICKS) {
+            if (world instanceof Level level) {
+                level.playSound(null, BlockPos.containing(x, y, z), BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("block.fire.extinguish")), SoundSource.NEUTRAL, 1, 1);
+            }
+            rose.shrink(1);
+            CustomData.update(DataComponents.CUSTOM_DATA, rose, tag -> tag.putDouble("wilt_timer", 0));
+        }
+    }
+
+    private static boolean checkNearbyRoseBlocks(LevelAccessor world, SplinterEntity splinter) {
+        for (int sx = -ROSE_SCAN_XZ; sx < ROSE_SCAN_XZ; sx++) {
+            for (int sy = -ROSE_SCAN_Y; sy < ROSE_SCAN_Y; sy++) {
+                for (int sz = -ROSE_SCAN_XZ; sz < ROSE_SCAN_XZ; sz++) {
+                    BlockPos check = BlockPos.containing(splinter.getX() + sx, splinter.getY() + sy, splinter.getZ() + sz);
+                    if (world.getBlockState(check).getBlock() == TheBackwoodsModBlocks.ASH_ROSE.get()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private static Entity findEntityInWorldRange(LevelAccessor world, Class<? extends Entity> clazz, double x, double y, double z, double range) {
+        return world.getEntitiesOfClass(clazz, AABB.ofSize(new Vec3(x, y, z), range, range, range), e -> true)
+                .stream().sorted(Comparator.comparingDouble(e -> e.distanceToSqr(x, y, z))).findFirst().orElse(null);
+    }
 }

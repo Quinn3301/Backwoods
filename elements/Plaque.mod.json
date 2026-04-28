@@ -43,20 +43,20 @@
     "specialInformation": {
       "fixedValue": []
     },
-    "hardness": 4.0,
-    "resistance": 35.0,
+    "hardness": 1.5,
+    "resistance": 2.0,
     "hasGravity": false,
     "isWaterloggable": false,
     "hasBlockItem": true,
     "maxStackSize": 64,
-    "rarity": "UNCOMMON",
+    "rarity": "COMMON",
     "immuneToFire": false,
     "creativeTabs": [
       {
         "value": "BUILDING_BLOCKS"
       }
     ],
-    "destroyTool": "Not specified",
+    "destroyTool": "shovel",
     "customDrop": {
       "value": ""
     },
@@ -69,7 +69,7 @@
     "plantsGrowOn": false,
     "canRedstoneConnect": false,
     "lightOpacity": 15,
-    "tickRate": 20,
+    "tickRate": 200,
     "tickRandomly": true,
     "isReplaceable": false,
     "canProvidePower": false,
@@ -139,6 +139,9 @@
     "isFluidTank": false,
     "fluidCapacity": 8000,
     "fluidRestrictions": [],
+    "onBlockAdded": {
+      "name": "PlaqueBlockAdded"
+    },
     "onTickUpdate": {
       "name": "PlaqueSpreadOnTickUpdate"
     },

@@ -20,5 +20,6 @@ public class TheBackwoodsModEntityRenderers {
 		event.registerEntityRenderer(TheBackwoodsModEntities.ASH_WEAVER.get(), AshWeaverRenderer::new);
 		event.registerEntityRenderer(TheBackwoodsModEntities.ROT.get(), RotRenderer::new);
 		event.registerEntityRenderer(TheBackwoodsModEntities.BLINDSPOT_SPLINTER.get(), BlindspotSplinterRenderer::new);
+		event.registerEntityRenderer(TheBackwoodsModEntities.PETRIFIED_LOG_SPLINTER.get(), PetrifiedLogSplinterRenderer::new);
 	}
 }

@@ -38,12 +38,6 @@
         "weight": 20,
         "minCount": 2,
         "maxCount": 3
-      },
-      {
-        "type": "camel",
-        "weight": 3,
-        "minCount": 1,
-        "maxCount": 1
       }
     ],
     "ambient": [],

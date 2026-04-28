@@ -1,0 +1,51 @@
+{
+  "_fv": 79,
+  "_type": "tool",
+  "definition": {
+    "toolType": "Axe",
+    "renderType": 0,
+    "blockingRenderType": 0,
+    "texture": "null-pointer_axe",
+    "customModelName": "Normal",
+    "blockingModelName": "Normal blocking",
+    "guiTexture": "",
+    "name": "Null Pointer Axe",
+    "specialInformation": {
+      "fixedValue": [
+        "§8For testing only."
+      ]
+    },
+    "creativeTabs": [
+      {
+        "value": "TOOLS"
+      }
+    ],
+    "efficiency": 10.0,
+    "attackSpeed": 6.7,
+    "enchantability": 7,
+    "damageVsEntity": 2077.0,
+    "usageCount": 2077,
+    "glowCondition": {
+      "fixedValue": false
+    },
+    "repairItems": [
+      {
+        "value": "CUSTOM:FadedBlock"
+      },
+      {
+        "value": "CUSTOM:PetrifiedBark"
+      },
+      {
+        "value": "CUSTOM:SharpenedSplinterShard"
+      },
+      {
+        "value": "CUSTOM:PlaqueHeart"
+      }
+    ],
+    "immuneToFire": true,
+    "blockDropsTier": "NETHERITE",
+    "blocksAffected": [],
+    "stayInGridWhenCrafting": false,
+    "damageOnCrafting": false
+  }
+}

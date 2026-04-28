@@ -37,7 +37,6 @@ import net.minecraft.core.BlockPos;
 
 import net.mcreator.thebackwoods.procedures.LogSplinterOnInitialEntitySpawnProcedure;
 import net.mcreator.thebackwoods.procedures.LogSplinterOnEntityTickUpdateProcedure;
-import net.mcreator.thebackwoods.procedures.LogSplinterEntityDiesProcedure;
 import net.mcreator.thebackwoods.init.TheBackwoodsModEntities;
 
 import javax.annotation.Nullable;
@@ -117,8 +116,6 @@ public class LogSplinterEntity extends Monster {
 
 	@Override
 	public boolean hurt(DamageSource damagesource, float amount) {
-		if (damagesource.is(DamageTypes.IN_FIRE))
-			return false;
 		if (damagesource.getDirectEntity() instanceof AbstractArrow)
 			return false;
 		if (damagesource.getDirectEntity() instanceof ThrownPotion || damagesource.getDirectEntity() instanceof AreaEffectCloud || damagesource.typeHolder().is(NeoForgeMod.POISON_DAMAGE))
@@ -130,12 +127,6 @@ public class LogSplinterEntity extends Monster {
 		if (damagesource.is(DamageTypes.DRAGON_BREATH))
 			return false;
 		return super.hurt(damagesource, amount);
-	}
-
-	@Override
-	public void die(DamageSource source) {
-		super.die(source);
-		LogSplinterEntityDiesProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
 	}
 
 	@Override
@@ -213,9 +204,9 @@ public class LogSplinterEntity extends Monster {
 
 	public static AttributeSupplier.Builder createAttributes() {
 		AttributeSupplier.Builder builder = Mob.createMobAttributes();
-		builder = builder.add(Attributes.MOVEMENT_SPEED, 0.35);
-		builder = builder.add(Attributes.MAX_HEALTH, 30);
-		builder = builder.add(Attributes.ARMOR, 0);
+		builder = builder.add(Attributes.MOVEMENT_SPEED, 0.325);
+		builder = builder.add(Attributes.MAX_HEALTH, 32);
+		builder = builder.add(Attributes.ARMOR, 2);
 		builder = builder.add(Attributes.ATTACK_DAMAGE, 6);
 		builder = builder.add(Attributes.FOLLOW_RANGE, 32);
 		builder = builder.add(Attributes.STEP_HEIGHT, 1);

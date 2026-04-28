@@ -32,5 +32,8 @@
       }
     }
   },
+  "rewards": {
+    "experience": 7
+  },
   "parent": "the_backwoods:punishment"
 }

@@ -14,7 +14,7 @@
     "hideIfNotCompleted": false,
     "rewardLoot": [],
     "rewardRecipes": [],
-    "rewardXP": 4,
+    "rewardXP": 8,
     "achievementType": "goal",
     "parent": {
       "value": "CUSTOM:EnterRottingDimension"

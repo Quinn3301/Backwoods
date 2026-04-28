@@ -20,7 +20,7 @@
     }
   },
   "rewards": {
-    "experience": 20
+    "experience": 30
   },
   "parent": "the_backwoods:enter_backwoods"
 }

@@ -370,5 +370,104 @@
         "stream": false
       }
     ]
+  },
+  "wood_crack_1": {
+    "subtitle": "subtitles.wood_crack_1",
+    "sounds": [
+      {
+        "name": "the_backwoods:wood_crack6",
+        "stream": false
+      }
+    ]
+  },
+  "wood_crack_2": {
+    "subtitle": "subtitles.wood_crack_2",
+    "sounds": [
+      {
+        "name": "the_backwoods:wood_crack7",
+        "stream": false
+      }
+    ]
+  },
+  "wood_crack_3": {
+    "subtitle": "subtitles.wood_crack_3",
+    "sounds": [
+      {
+        "name": "the_backwoods:wood_crack8",
+        "stream": false
+      }
+    ]
+  },
+  "wood_crack_4": {
+    "subtitle": "subtitles.wood_crack_4",
+    "sounds": [
+      {
+        "name": "the_backwoods:wood_crack9",
+        "stream": false
+      }
+    ]
+  },
+  "wood_crack_5": {
+    "subtitle": "subtitles.wood_crack_5",
+    "sounds": [
+      {
+        "name": "the_backwoods:wood_crack10",
+        "stream": false
+      }
+    ]
+  },
+  "wood_crack_6": {
+    "subtitle": "subtitles.wood_crack_6",
+    "sounds": [
+      {
+        "name": "the_backwoods:wood_crack11",
+        "stream": false
+      }
+    ]
+  },
+  "wood_crack_7": {
+    "subtitle": "subtitles.wood_crack_7",
+    "sounds": [
+      {
+        "name": "the_backwoods:wood_crack12",
+        "stream": false
+      }
+    ]
+  },
+  "still_ambient3": {
+    "subtitle": "subtitles.still_ambient3",
+    "sounds": [
+      {
+        "name": "the_backwoods:i_love_you_klickaud",
+        "stream": true
+      }
+    ]
+  },
+  "familiar_ambient_1": {
+    "subtitle": "subtitles.familiar_ambient_1",
+    "sounds": [
+      {
+        "name": "the_backwoods:lemonmusiclab-dark-ambient-soundscape-505384",
+        "stream": false
+      }
+    ]
+  },
+  "familiar_ambient_2": {
+    "subtitle": "subtitles.familiar_ambient_2",
+    "sounds": [
+      {
+        "name": "the_backwoods:numbthefeelings-dark-ambient-sad-background-445781",
+        "stream": false
+      }
+    ]
+  },
+  "familiar_ambient_3": {
+    "subtitle": "subtitles.familiar_ambient_3",
+    "sounds": [
+      {
+        "name": "the_backwoods:9jackjack8-stretched-door-dreamcore-liminal-508639",
+        "stream": false
+      }
+    ]
   }
 }
